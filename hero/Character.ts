@@ -1,38 +1,30 @@
 
-import { ICoord, IImgAnimation } from '../interfaces';
-import { IHero, IHeroCreated } from '../interfaces/Hero.Interface';
-import { createRandomStats } from '../utility/hero.utils';
-import { uniqueID } from '../utility/Utility';
-import { Chair } from './GridBoxesTypes';
+import { ICharacterConstructor } from '../interfaces'
+import { uniqueID } from '../utils';
 // import { StatsManager } from './fightStatsManager';
 
 
-export class Hero {
-	isDead: boolean = false;
-	[x: string]: string | number | IImgAnimation | boolean | any;
-    coords: ICoord = {x: 0, y: 0, xCoord: 0, yCoord: 0} //x-y son col-row. xCoord-yCoord son pixeles desplazados.
-	constructor() {
-		let newData = createRandomStats();
-		const keys = Object.keys(newData);
+export class Character {
+    id?: number;
+    stats?: any;
 
-		keys.forEach((key, index) => {
-			this[key] = newData[key as keyof IHeroCreated];
-		});
+    constructor({
+        id,
+        stats,
+    }) {
+        this.id = id ? id : uniqueID();
+        this.stats = stats ? stats: null;
+    }
 
-		this.curr_att_interval = newData.att_interval;
-		this.currentHp = newData.hp;
-		this.id = uniqueID();
-	}
+    // fightStats: StatsManager; //Manager de stats. Easy
+    // heroStats: IHero;
+    // isDead = false;
 
-	// fightStats: StatsManager; //Manager de stats. Easy
-	// heroStats: IHero;
-	// isDead = false;
+    start: () => void = () => { };
 
-	start: () => void = () => { };
+    end: () => void = () => { };
 
-	end: () => void = () => { };
-
-	attack = (dmgEf = 0) => {
+    attack = (dmgEf = 0) => {
         let { accuracy, crit, critDmg, dmg, variation } = this;
 
         let damageApplied = dmg + dmgEf;
