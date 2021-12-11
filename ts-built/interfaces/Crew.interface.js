@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+;
+;
+// WAITING_TO_ENTER: string;
+// SITTING: string;
+// SITTED: string;
+// SEARCHING_MISSION: string;
+// GOING_OUT: string;
+// IN_A_MISSION: string;
+// HEALING: string;
+// GONE: string;
+// DEAD: string;
