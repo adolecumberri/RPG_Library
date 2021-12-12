@@ -1,127 +1,54 @@
 
-import { ICharacterConstructor } from '../interfaces'
+import { ICharacterConstructor, IStats } from '../interfaces'
 import { uniqueID } from '../utils';
 // import { StatsManager } from './fightStatsManager';
 
 
 export class Character {
     id?: number;
-    stats?: any;
-
+    stats?: IStats
+    variation?: number;
     constructor({
         id,
         stats,
-    }) {
+        variation,
+    }: ICharacterConstructor) {
         this.id = id ? id : uniqueID();
-        this.stats = stats ? stats: null;
+        this.stats = stats;
+        this.variation = variation;
     }
 
-    // fightStats: StatsManager; //Manager de stats. Easy
-    // heroStats: IHero;
-    // isDead = false;
 
-    start: () => void = () => { };
+    startTurn: () => void = () => { };
 
-    end: () => void = () => { };
+    endTurn: () => void = () => { };
 
-    attack = (dmgEf = 0) => {
-        let { accuracy, crit, critDmg, dmg, variation } = this;
+    startFight: () => void = () => {};
 
-        let damageApplied = dmg + dmgEf;
+    endFight: () => void = () => {};
 
-        let minVar = 1 - variation;
-        let maxVar = 1 + variation;
-        let damage = 0;
+    attack = () => {};
 
-        if (accuracy > this.getProb()) {
-            //golpeo?
-            if (crit > this.getProb()) {
-                //critico
-                damage = this.rand(damageApplied * (critDmg + 1) * maxVar, damageApplied * (critDmg + 1) * minVar);
-            } else {
-                // normal hit
-                damage = this.rand(damageApplied * maxVar, damageApplied * minVar);
-            }
-        } else {
-            // miss
-        }
-        this.calcNextTurn();
-        return damage;
-    };
-
-
-    //enemi es class Monster
-    defend = (enemi: IHero) => {
-        let { currentHp, def, evasion } = this;
-        let finalDamage = 0;
-
-        //Evade o no.
-        if (evasion <= this.getProb()) {
-            let enemiAttack = enemi.attack();
-            let attMultiplier = 40 / (40 + def);
-            finalDamage = Math.round(enemiAttack * attMultiplier);
-
-        } else {
-            //al no atacar, no calcula el siguiente turno
-            enemi.calcNextTurn(enemi.att_interval);
-        }
-
-        this.currentHp = currentHp - finalDamage >= 0 ? currentHp - finalDamage : 0; //
-
-        if (currentHp === 0) {
-            this.dies();
-            enemi.addKill();
-        }
-    };
+    defend = () => {};
 
     //daño directo sin pasar por armadura
-    straightDamage = (damage: number) => {
-        let { currentHp } = this;
-        this.currentHp = currentHp - damage >= 0 ? currentHp - damage : 0;
-
-        if (currentHp === 0) {
-            this.dies();
-        }
-    };
+    straightDamage = () => {};
 
     //HERO DIES
-    dies = () => {
-        this.isDead = true;
-    };
+    dies = () => {};
 
     //HERO WINS
-    addKill = () => {
-        this.kills = this.kills + 1;
-    };
+    addKill = () => {};
 
-    revive = () => {
-        this.isDead = false;
-        this.kills = 0;
-        this.curr_att_interval = this.att_interval;
-        this.currentHp = this.hp;
-    }
+    revive = () => {}
 
     //calculo siguiente turno. Habilidades de velocidad lo sobreescribiran.
-    calcNextTurn = (att_intervalEf = 0) => {
-        let { curr_att_interval, att_interval } = this;
-        let new_att_interval = parseInt(curr_att_interval) + (att_interval + att_intervalEf);
+    calcNextTurn = () => {};
 
-        //no entiendo esta linea. la parte del "else" no tienen sentido.
-        this.curr_att_interval =
-            new_att_interval > parseInt(curr_att_interval) ? new_att_interval : parseInt(curr_att_interval) + 1;
-    };
-
-    rand = (max: number, min = 0) =>
-        Math.round(Math.random() * (max - min) + min);
+    rand = (max: number, min = 0) => Math.round(Math.random() * (max - min) + min);
 
     //function to load probabilities.
     getProb = () => Math.random();
-
-    asignCoords = (c: ICoord) => {
-        this.coords = {
-            ...c
-        }
-    }
 
 }
 
