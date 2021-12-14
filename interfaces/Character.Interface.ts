@@ -1,17 +1,28 @@
 import { Character } from "../hero/Character";
 
-
-
-
 interface IStats {
+    accuracy: number;
+    attack: number;
+    attack_speed?: number;
+    crit: number;
+    critDamage: number;
+    currentHp: number;
+    deffence?: number;
+    evasion: number;
+    hp: number;
+    magicalAttack?: number;
+}
+
+interface IConstructorStats {
     accuracy?: number;
     attack?: number;
     attack_speed?: number;
     crit?: number;
     critDamage?: number;
+    currentHp?: number;
     deffence?: number;
     evasion?: number;
-    hp?: number;
+    hp: number;
     magicalAttack?: number;
 }
 
@@ -31,7 +42,7 @@ interface IActions {
 
 interface ICharacterConstructor {
     id: number | string,
-    stats: IStats,
+    stats?: IConstructorStats,
     variation: number | {
         maxVariation: number,
         minVariation: number
