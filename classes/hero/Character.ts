@@ -1,7 +1,7 @@
 
-import M from '../constants/messages';
-import { IActions, ICharacterConstructor, IStats } from '../interfaces'
-import { isPercentage, uniqueID } from './../utils';
+import M from '../../constants/messages';
+import { IActions, ICharacterConstructor, IStats } from '../../interfaces'
+import { isPercentage, uniqueID } from '../../utils';
 // import { StatsManager } from './fightStatsManager';
 
 
