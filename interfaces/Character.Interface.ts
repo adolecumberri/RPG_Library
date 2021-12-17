@@ -1,4 +1,4 @@
-import { Character } from "../hero/Character";
+import { Character } from "../classes/hero/Character";
 
 interface IStats {
     accuracy: number;
@@ -26,6 +26,17 @@ interface IConstructorStats {
     magicalAttack?: number;
 }
 
+interface IStatsEffect {
+    accuracy?: number;
+    attack?: number;
+    attack_speed?: number;
+    crit?: number;
+    critDamage?: number;
+    deffence?: number;
+    evasion?: number;
+    magicalAttack?: number;
+}
+
 interface IActions {
     addKill?: (character: Character) => any;
     attack?: (character: Character) => any;
@@ -50,4 +61,4 @@ interface ICharacterConstructor {
     actions: IActions,
 }
 
-export { IActions, ICharacterConstructor, IStats }
+export { IActions, ICharacterConstructor, IStats, IStatsEffect }
