@@ -1,5 +1,5 @@
 
-import { ITemporalEffectConstructor } from "../../interfaces";
+import { ITemporalStatusConstructor } from "../../interfaces";
 
 
 /**
@@ -22,12 +22,12 @@ import { ITemporalEffectConstructor } from "../../interfaces";
 export class TemporalEffect {
 
 
-    constructor({ type, appliedOn = "AFTER_TURN", duration = 1, value }: ITemporalEffectConstructor) {
+    constructor({ type, appliedOn = "AFTER_TURN", duration = 1, value }: ITemporalStatusConstructor) {
 
         this.checkLogicErrors({ type, appliedOn, duration, value })
     }
 
-    checkLogicErrors({appliedOn, duration, type, value}: ITemporalEffectConstructor){
+    checkLogicErrors({appliedOn, duration, type, value}: ITemporalStatusConstructor){
         if(typeof value === "number" && type === "BUFF" || type === "DEBUFF" ){
             throw new Error("Value must be IStats object when type is BUFF or DEBUFF.");
         }

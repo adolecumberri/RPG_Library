@@ -1,4 +1,4 @@
-import { ICharacterConstructor, IActions, IStats, IStatsEffect } from "./Character.Interface";
-import { IPermanentEffectConstructor, ITemporalEffectConstructor } from "./Effect.interface";
+import { ICharacterConstructor, IActions, IStats, IStatusStats } from "./Character.Interface";
+import { IPermanentStatusConstructor, ITemporalStatusConstructor } from "./Status.interface";
 
-export { ICharacterConstructor, IActions, IStats, IStatsEffect, IPermanentEffectConstructor, ITemporalEffectConstructor }
+export { ICharacterConstructor, IActions, IStats, IStatusStats, IPermanentStatusConstructor, ITemporalStatusConstructor }

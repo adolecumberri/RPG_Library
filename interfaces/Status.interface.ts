@@ -1,21 +1,21 @@
-import { IStatsEffect } from ".";
+import { IStatusStats } from ".";
 
 
-interface ITemporalEffectConstructor {
+interface ITemporalStatusConstructor {
     type: "DAMAGE" | "REGEN" | "BUFF" | "DEBUFF";
     appliedOn: "AFTER_ATTACK" | "AFTER_TURN" | "BEFORE_ATTACK" | "BEFORE_TURN"; 
     duration: number;
-    value: number | IStatsEffect
+    value: number | IStatusStats
 }
 
-interface IPermanentEffectConstructor {
+interface IPermanentStatusConstructor {
     type: "DAMAGE" | "REGEN" | "BUFF" | "DEBUFF";
     appliedOn: "AFTER_ATTACK" | "AFTER_TURN" | "BEFORE_ATTACK" | "BEFORE_TURN"; 
-    value: number | IStatsEffect
+    value: number | IStatusStats
 }
 
 
 export {
-    ITemporalEffectConstructor,
-    IPermanentEffectConstructor
+    ITemporalStatusConstructor,
+    IPermanentStatusConstructor
 }

@@ -1,4 +1,4 @@
-import { IPermanentEffectConstructor } from "../../interfaces";
+import { IPermanentStatusConstructor } from "../../interfaces";
 
 
 /**
@@ -17,13 +17,13 @@ import { IPermanentEffectConstructor } from "../../interfaces";
  * Value: integer | Istats
  * */
 
-//This effect will last the whole  fight.
-export class PermanentEffect {
-    constructor({ appliedOn, type, value }: IPermanentEffectConstructor) {
+//This Status will last the whole  fight.
+export class PermanentStatus {
+    constructor({ appliedOn, type, value }: IPermanentStatusConstructor) {
         this.checkLogicErrors({appliedOn, type, value})
     }
 
-    checkLogicErrors({appliedOn, type, value}: IPermanentEffectConstructor){
+    checkLogicErrors({appliedOn, type, value}: IPermanentStatusConstructor){
         if(typeof value === "number" && type === "BUFF" || type === "DEBUFF" ){
             throw new Error("Value must be IStats object when type is BUFF or DEBUFF.");
         }

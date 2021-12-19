@@ -26,7 +26,7 @@ interface IConstructorStats {
     magicalAttack?: number;
 }
 
-interface IStatsEffect {
+interface IStatusStats {
     accuracy?: number;
     attack?: number;
     attack_speed?: number;
@@ -61,4 +61,4 @@ interface ICharacterConstructor {
     actions: IActions,
 }
 
-export { IActions, ICharacterConstructor, IStats, IStatsEffect }
+export { IActions, ICharacterConstructor, IStats, IStatusStats }
