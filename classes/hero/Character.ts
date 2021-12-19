@@ -1,7 +1,7 @@
 
 import M from '../../constants/messages';
 import { IActions, ICharacterConstructor, IStats, IVariation } from '../../interfaces'
-import { isPercentage, uniqueID } from '../../utils';
+import { isPercentage, percentageToNumber, uniqueID } from '../../utils';
 // import { StatsManager } from './fightStatsManager';
 
 //TODOS: add Spells.
@@ -32,7 +32,7 @@ export class Character {
         let finalDamage = damage - (character?.stats.deffence as number);
 
         //if finalDamage lower than minDamage, I send minDamage.
-        return finalDamage < (character?.minDamage as number) ? (character?.minDamage as number)  : finalDamage;
+        return finalDamage < (character?.minDamage as number) ? (character?.minDamage as number) : finalDamage;
     };
 
     id: number | string;
@@ -153,9 +153,9 @@ export class Character {
         let damageDone = 0;
 
         //does he evade?
-        if(evasion <= this.getProb()){
+        if (evasion <= this.getProb()) {
             damageDone = this.deffenceFunction(damage, this);
-        }else{
+        } else {
             //attack evaded
         }
 
@@ -219,6 +219,37 @@ export class Character {
         callback(callbackParam);
     };
 
+    removeHp(hpRemoved: number | string): number {
+        if (isPercentage(hpRemoved)) {
+            this.currentHp -= this.hp * percentageToNumber(hpRemoved as string);
+        } else {
+            this.currentHp -= hpRemoved as number;
+        }
+
+        //is dead?
+        if (this.currentHp < 0) {
+            this.currentHp = 0;
+        }
+
+        return this.currentHp;
+    }
+
+    addHp(hpAdded: number | string): number {
+        if (isPercentage(hpAdded)) {
+            this.currentHp += this.hp * percentageToNumber(hpAdded as string);
+        } else {
+            this.currentHp += hpAdded as number;
+        }
+
+        //Over healed?
+        if (this.currentHp > this.hp) {
+            this.currentHp = this.hp;
+        }
+
+        return this.currentHp;
+
+    }
+
     startFight(callback: (action_startFight_return?: any) => void) {
 
         //if action.startFight execute it as this as parameter
@@ -245,7 +276,7 @@ export class Character {
 
         if (isPercentage(damage)) {
             // percentage to number. Calculated the percentage coeficient. Loaded Life lost and Loaded newHp
-            let newHp = this.stats.currentHp - (this.stats.currentHp * Math.floor(parseFloat(damage as string) / 100));
+            let newHp = this.stats.currentHp - (this.stats.currentHp * percentageToNumber(damage as string));
             // if hp is under 0, it's set to 0.
             this.stats.currentHp = newHp > 0 ? newHp : 0;
         } else {
@@ -295,7 +326,7 @@ export class Character {
         }
 
         //minDamage logic
-        if(minDamage < 0){
+        if (minDamage < 0) {
             throw new Error(M.min_damage_negative);
         }
 
