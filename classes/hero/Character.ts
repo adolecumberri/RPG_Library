@@ -1,10 +1,12 @@
 
 import M from '../../constants/messages';
-import { IActions, ICharacterConstructor, IStats } from '../../interfaces'
+import { IActions, ICharacterConstructor, IStats, IVariation } from '../../interfaces'
 import { isPercentage, uniqueID } from '../../utils';
 // import { StatsManager } from './fightStatsManager';
 
-
+//TODOS: add Spells.
+//TODO: add Status manadgement.
+//TODO: 
 
 // * @param {type}   var           Description.
 // * @param {type}   [var]         Description of optional variable.
@@ -24,9 +26,21 @@ export class Character {
 
     alive: boolean = true;
 
+    //! calcula el coeficiente de defensa, que despues multiplica la defesa de this.stats.
+    deffenceFunction: (damage: number, character?: Character) => number = (damage, character) => {
+        //load final damage. (damage - deffence.)
+        let finalDamage = damage - (character?.stats.deffence as number);
+
+        //if finalDamage lower than minDamage, I send minDamage.
+        return finalDamage < (character?.minDamage as number) ? (character?.minDamage as number)  : finalDamage;
+    };
+
     id: number | string;
 
     kills: number = 0;
+
+    //min damage able to receibe.
+    minDamage: number;
 
     stats: IStats = {
         accuracy: 1,
@@ -34,32 +48,33 @@ export class Character {
         crit: 0,
         critDamage: 1,
         currentHp: 0,
+        deffence: 0,
         evasion: 0,
         hp: 0,
     }; //Todo: apply
 
-    variation?: number | {
-        maxVariation: number,
-        minVariation: number
-    } = 0; //Todo: apply
+    variation: number | IVariation = 0; //Todo: apply
 
     //TODO: Status
     status: any;
 
     [x: string]: any
     constructor({
+        actions,
+        deffenceFunction,
         id,
+        minDamage = 0,
         stats,
         variation = 0,
-        actions,
         ...args
     }: ICharacterConstructor) {
 
         this.checkLogicErrors({
+            actions,
             id,
+            minDamage,
             stats,
             variation,
-            actions,
         });
 
         this.id = id ? id : uniqueID();
@@ -72,11 +87,12 @@ export class Character {
                     stats.hp : 0
         };
 
-        //percentage of variation on attack.
-        this.variation = variation;
         this.actions = actions;
+        this.minDamage = minDamage;
+        this.variation = variation;
+        this.deffenceFunction = deffenceFunction ? deffenceFunction : this.deffenceFunction;
 
-        //adding args to this.
+        //adding ...args to this.
         const keys = Object.keys(args);
         keys.forEach((key, index) => {
             this[key] = args[key];
@@ -93,16 +109,32 @@ export class Character {
         callback(callbackParam);
     };
 
+    attack(callback: (action_attack_return?: any) => number) {
+        let { accuracy, crit, critDamage, attack } = this.stats;
 
-    attack(callback: (action_attack_return?: any) => void) {
+        let { maxVar, minVar } = this.loadVariation();
 
-        //TODO: calc damage.
-        //TODO: check variations.
+        let damage = 0;
+
+        if (accuracy > this.getProb()) {
+            //does he hit?
+            if (crit > this.getProb()) {
+                //critical
+                damage = this.rand(attack * (critDamage + 1) * maxVar, attack * (critDamage + 1) * minVar);
+            } else {
+                // normal hit
+                damage = this.rand(attack * maxVar, attack * minVar);
+            }
+        } else {
+            // miss
+        }
 
         //if action.attack execute it as this as parameter
         let callbackParam = this.actions.attack && this.actions.attack(this);
 
         callback(callbackParam);
+
+        return damage;
     };
 
     //TODO: control attack_speed > 0.
@@ -115,12 +147,24 @@ export class Character {
     };
 
 
-    defend(callback: (action_defend_return?: any) => void) {
-        //todo: if ! deffence function: deffence - attack. <<-- check min dmg.
+    defend(damage: number, callback: (action_defend_return?: any) => void) {
+
+        let { evasion } = this.stats;
+        let damageDone = 0;
+
+        //does he evade?
+        if(evasion <= this.getProb()){
+            damageDone = this.deffenceFunction(damage, this);
+        }else{
+            //attack evaded
+        }
+
         //if action.defend execute it as this as parameter
         let callbackParam = this.actions.defend && this.actions.defend(this);
 
         callback(callbackParam);
+
+        return damageDone;
     };
 
     dies(callback: (action_dies_return?: any) => void) {
@@ -149,6 +193,20 @@ export class Character {
 
         callback(callbackParam);
     };
+
+    loadVariation() {
+        let minVar = 1;
+        let maxVar = 1;
+        if (typeof this.variation === "number") {
+            minVar -= this.variation;
+            maxVar += this.variation;
+        } else if (this.variattion.discriminator === "IVariation") {
+            minVar -= this.variation?.minVariation as number;
+            maxVar += this.variation?.maxVariation as number;
+        }
+
+        return { maxVar, minVar }
+    }
 
     revive(callback: (action_revive_return?: any) => void) {
 
@@ -209,11 +267,13 @@ export class Character {
     getProb = () => Math.random();
 
 
-    checkLogicErrors({ id, stats, variation, actions, }: ICharacterConstructor) {
+    checkLogicErrors({ id, stats, variation, actions, minDamage }: ICharacterConstructor) {
+        //id logic
         if (typeof id === "string" || typeof id === "number") {
             throw new Error(M.wrong_id_type);
         }
 
+        //variation logic
         if (typeof variation === "number") {
             if (variation > 1 || variation < 0) {
                 throw new Error(M.variation_out_of_bounds);
@@ -224,17 +284,22 @@ export class Character {
                 throw new Error(M.max_lower_than_min);
             }
 
-            if (variation.maxVariation > 1) {
+            if (variation.maxVariation < 0) {
                 throw new Error(M.max_variation_out_of_bounds);
             }
 
-            if (variation.minVariation < 0) {
+            if (variation.minVariation > 1 || variation.minVariation < 0) {
                 throw new Error(M.min_variation_out_of_bounds);
             }
 
         }
 
+        //minDamage logic
+        if(minDamage < 0){
+            throw new Error(M.min_damage_negative);
+        }
 
+        //TODO: stats logic.
 
     }
 

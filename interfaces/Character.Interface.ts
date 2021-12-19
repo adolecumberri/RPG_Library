@@ -7,7 +7,7 @@ interface IStats {
     crit: number;
     critDamage: number;
     currentHp: number;
-    deffence?: number;
+    deffence: number;
     evasion: number;
     hp: number;
     magicalAttack?: number;
@@ -18,10 +18,10 @@ interface IConstructorStats {
     attack?: number;
     attack_speed?: number;
     crit?: number;
-    critDamage?: number;
+    critDamage: number;
     currentHp?: number;
-    deffence?: number;
-    evasion?: number;
+    deffence: number;
+    evasion: number;
     hp: number;
     magicalAttack?: number;
 }
@@ -53,13 +53,17 @@ interface IActions {
 
 interface ICharacterConstructor {
     id: number | string,
-    stats?: IConstructorStats,
-    variation: number | {
-        maxVariation: number,
-        minVariation: number
-    },
+    stats: IConstructorStats,
+    variation: number | IVariation,
     actions: IActions,
     [x: string]: any
 }
 
-export { IActions, ICharacterConstructor, IStats, IStatusStats }
+//! Discriminator used to check interface in conditions.
+interface IVariation {
+    discriminator: "IVariation",
+    maxVariation: number,
+    minVariation: number
+}
+
+export { IActions, ICharacterConstructor, IStats, IStatusStats, IVariation }
