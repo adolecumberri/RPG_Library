@@ -18,10 +18,10 @@ interface IConstructorStats {
     attack?: number;
     attack_speed?: number;
     crit?: number;
-    critDamage: number;
+    critDamage?: number;
     currentHp?: number;
-    deffence: number;
-    evasion: number;
+    deffence?: number;
+    evasion?: number;
     hp: number;
     magicalAttack?: number;
 }

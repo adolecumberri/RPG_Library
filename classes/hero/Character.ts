@@ -69,23 +69,25 @@ export class Character {
         ...args
     }: ICharacterConstructor) {
 
-        this.checkLogicErrors({
-            actions,
-            id,
-            minDamage,
-            stats,
-            variation,
-        });
-
-        this.id = id ? id : uniqueID();
-        //added this.stats default values AND stats from props.
-        this.stats = !stats ? this.stats : {
+         //added this.stats default values AND stats from props.
+         this.stats = !stats ? this.stats : {
             ...this.stats, ...stats,
             currentHp: stats?.currentHp ?
                 stats.currentHp :
                 stats?.hp ?
                     stats.hp : 0
         };
+
+        //check arguments AND stats mixed with default Stats.
+        this.checkLogicErrors({
+            actions,
+            id,
+            minDamage,
+            stats: this.stats,
+            variation,
+        });
+
+        this.id = id ? id : uniqueID();
 
         this.actions = actions;
         this.minDamage = minDamage;
@@ -298,7 +300,7 @@ export class Character {
     getProb = () => Math.random();
 
 
-    checkLogicErrors({ id, stats, variation, actions, minDamage }: ICharacterConstructor) {
+    checkLogicErrors({ id, stats, variation, actions, minDamage }: {stats: IStats, [x:string]: any}) {
         //id logic
         if (typeof id === "string" || typeof id === "number") {
             throw new Error(M.wrong_id_type);
@@ -331,7 +333,16 @@ export class Character {
         }
 
         //TODO: stats logic.
-
+        if(stats.accuracy === 0 || stats.accuracy < 0){
+            throw new Error(M.accuracy_zero)
+        }
+        if(stats.evasion > 1 || stats.evasion < 0){
+            throw new Error(M.evasion_out_of_bounds);
+        }
+        
+        if(stats.crit > 1 || stats.crit < 0){
+            throw new Error(M.crit_out_of_bounds);
+        }
     }
 
 }
