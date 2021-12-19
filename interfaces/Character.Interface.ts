@@ -59,6 +59,7 @@ interface ICharacterConstructor {
         minVariation: number
     },
     actions: IActions,
+    [x: string]: any
 }
 
 export { IActions, ICharacterConstructor, IStats, IStatusStats }

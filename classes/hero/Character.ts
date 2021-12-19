@@ -41,17 +41,27 @@ export class Character {
     variation?: number | {
         maxVariation: number,
         minVariation: number
-    } //Todo: apply
+    } = 0; //Todo: apply
 
-    //TODO: Effects
-    effects: any;
+    //TODO: Status
+    status: any;
 
+    [x: string]: any
     constructor({
         id,
         stats,
-        variation,
-        actions
+        variation = 0,
+        actions,
+        ...args
     }: ICharacterConstructor) {
+
+        this.checkLogicErrors({
+            id,
+            stats,
+            variation,
+            actions,
+        });
+
         this.id = id ? id : uniqueID();
         //added this.stats default values AND stats from props.
         this.stats = !stats ? this.stats : {
@@ -61,8 +71,16 @@ export class Character {
                 stats?.hp ?
                     stats.hp : 0
         };
+
+        //percentage of variation on attack.
         this.variation = variation;
         this.actions = actions;
+
+        //adding args to this.
+        const keys = Object.keys(args);
+        keys.forEach((key, index) => {
+            this[key] = args[key];
+        });
     }
 
     addKill(callback: (action_addKill_return?: any) => void) {
@@ -173,7 +191,7 @@ export class Character {
             // if hp is under 0, it's set to 0.
             this.stats.currentHp = newHp > 0 ? newHp : 0;
         } else {
-//TODO: damage straight to the hp.
+            //TODO: damage straight to the hp.
         }
 
         //TODO: morir automaticamente?
@@ -189,6 +207,36 @@ export class Character {
 
     //function to load probabilities.
     getProb = () => Math.random();
+
+
+    checkLogicErrors({ id, stats, variation, actions, }: ICharacterConstructor) {
+        if (typeof id === "string" || typeof id === "number") {
+            throw new Error(M.wrong_id_type);
+        }
+
+        if (typeof variation === "number") {
+            if (variation > 1 || variation < 0) {
+                throw new Error(M.variation_out_of_bounds);
+            }
+        } else if (typeof variation === "object") {
+
+            if (variation.maxVariation < variation.minVariation) {
+                throw new Error(M.max_lower_than_min);
+            }
+
+            if (variation.maxVariation > 1) {
+                throw new Error(M.max_variation_out_of_bounds);
+            }
+
+            if (variation.minVariation < 0) {
+                throw new Error(M.min_variation_out_of_bounds);
+            }
+
+        }
+
+
+
+    }
 
 }
 
