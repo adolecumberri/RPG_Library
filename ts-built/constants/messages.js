@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 let M = {
     "accuracy_zero": "Accuracy must be greater than zero to be able to hit.",
     "attack_speed_negative": "Attack speed must be over Zero",
@@ -10,7 +12,5 @@ let M = {
     "min_variation_out_of_bounds": "MinVariation must have a value between 0 and 1",
     "max_lower_than_min": "MaxVariation must be higher than MinVariation",
     "min_damage_negative": "minDamage must be equals to 0 or positive",
-}
-
-
-export default M;
+};
+exports.default = M;

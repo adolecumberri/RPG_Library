@@ -3,7 +3,8 @@ import { Character } from "../classes/hero/Character";
 interface IStats {
     accuracy: number;
     attack: number;
-    attack_speed?: number;
+    att_interval: number;
+    att_speed: number;
     crit: number;
     critDamage: number;
     currentHp: number;
@@ -11,12 +12,14 @@ interface IStats {
     evasion: number;
     hp: number;
     magicalAttack?: number;
+    [x: string]: any;
 }
 
 interface IConstructorStats {
     accuracy?: number;
     attack?: number;
-    attack_speed?: number;
+    att_interval?: number;
+    att_speed?: number;
     crit?: number;
     critDamage?: number;
     currentHp?: number;
@@ -24,12 +27,13 @@ interface IConstructorStats {
     evasion?: number;
     hp: number;
     magicalAttack?: number;
+    [x: string]: any;
 }
 
 interface IStatusStats {
     accuracy?: number;
     attack?: number;
-    attack_speed?: number;
+    att_speed?: number;
     crit?: number;
     critDamage?: number;
     deffence?: number;
