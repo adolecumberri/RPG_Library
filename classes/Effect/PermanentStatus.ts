@@ -1,5 +1,7 @@
 import { IPermanentStatusConstructor } from "../../interfaces";
+import { ICommonStatus } from "../../interfaces/Status.interface";
 import { uniqueID } from "../../utils";
+import { Status } from "./status";
 
 
 /**
@@ -19,24 +21,24 @@ import { uniqueID } from "../../utils";
  * */
 
 //This Status will last the whole  fight.
-export class PermanentStatus {
+export class PermanentStatus extends Status {
 
     type = "permanent";
-    id = 0;
-    constructor({ appliedOn, type, value }: IPermanentStatusConstructor) {
-        this.id = uniqueID();
+    
+    constructor({ appliedOn, type, value, name="" }: (IPermanentStatusConstructor & ICommonStatus)) {
+       super({appliedOn, type, value});
 
-        this.checkLogicErrors({ appliedOn, type, value })
+       //!unused
+        this.checkErrors();
     }
 
-    checkLogicErrors({ appliedOn, type, value }: IPermanentStatusConstructor) {
-        if (typeof value === "number" && type === "BUFF" || type === "DEBUFF") {
-            throw new Error("Value must be IStats object when type is BUFF or DEBUFF.");
-        }
+    use (){
 
-        if (typeof value === "object" && type === "DAMAGE" || type === "REGEN") {
-            throw new Error("Value must be a number when type is DAMAGE or REGEN")
-        }
+    }
+
+    //!unused
+    checkErrors() {
+      
     }
 
 }

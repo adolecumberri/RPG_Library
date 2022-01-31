@@ -1,21 +1,26 @@
 import { IStatusStats } from ".";
 
+type IAppliedOn =  "AFTER_ATTACK" | "AFTER_TURN" | "BEFORE_ATTACK" | "BEFORE_TURN";
+
+interface ICommonStatus {
+    type: "DAMAGE" | "REGEN" | "BUFF" | "DEBUFF";
+    appliedOn: IAppliedOn; 
+    value: number | IStatusStats;
+    name?: string;
+}
+
 
 interface ITemporalStatusConstructor {
-    type: "DAMAGE" | "REGEN" | "BUFF" | "DEBUFF";
-    appliedOn: "AFTER_ATTACK" | "AFTER_TURN" | "BEFORE_ATTACK" | "BEFORE_TURN"; 
     duration: number;
-    value: number | IStatusStats
 }
 
 interface IPermanentStatusConstructor {
-    type: "DAMAGE" | "REGEN" | "BUFF" | "DEBUFF";
-    appliedOn: "AFTER_ATTACK" | "AFTER_TURN" | "BEFORE_ATTACK" | "BEFORE_TURN"; 
-    value: number | IStatusStats
 }
 
 
 export {
+    IAppliedOn,
+    ICommonStatus,
     ITemporalStatusConstructor,
     IPermanentStatusConstructor
 }

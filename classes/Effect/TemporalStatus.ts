@@ -1,6 +1,8 @@
 
 import { ITemporalStatusConstructor } from "../../interfaces";
+import { ICommonStatus } from "../../interfaces/Status.interface";
 import { uniqueID } from "../../utils";
+import { Status } from "./status";
 
 
 /**
@@ -20,24 +22,24 @@ import { uniqueID } from "../../utils";
  * Value: integer | Istats
  * */
 
-export class TemporalEffect {
+export class TemporalStatus extends Status {
 
     type = "temporal";
     id = 0;
-    constructor({ type, appliedOn = "AFTER_TURN", duration = 1, value }: ITemporalStatusConstructor) {
-        this.id = uniqueID();
-        this.checkLogicErrors({ type, appliedOn, duration, value })
+    name= "permanent Status";
+    constructor({ type, appliedOn = "AFTER_TURN", duration = 1, value, name = "" }: (ITemporalStatusConstructor & ICommonStatus)) {
+        super({appliedOn, type, value});
+
+        this.checkErrors({duration});
+        
     }
 
-    checkLogicErrors({ appliedOn, duration, type, value }: ITemporalStatusConstructor) {
-        if (typeof value === "number" && type === "BUFF" || type === "DEBUFF") {
-            throw new Error("Value must be IStats object when type is BUFF or DEBUFF.");
-        }
+    use (){
 
-        if (typeof value === "object" && type === "DAMAGE" || type === "REGEN") {
-            throw new Error("Value must be a number when type is DAMAGE or REGEN")
-        }
+    }
 
+    checkErrors({ duration }: ITemporalStatusConstructor) {
+       
         if (duration < 1) {
             throw new Error("Duration must be positive.");
 
