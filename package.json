@@ -1,0 +1,27 @@
+{
+  "name": "rpg_library",
+  "version": "1.0.0",
+  "description": "A library of general utils to make some rpg stuff and practice with JS",
+  "main": ".eslint.config.js",
+  "directories": {
+    "example": "examples"
+  },
+  "dependencies": {
+    "jest": "^27.4.7",
+    "typescript": "^4.5.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adolecumberri/RPG_Library.git"
+  },
+  "author": "Adolfo Reyes Agustín",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adolecumberri/RPG_Library/issues"
+  },
+  "homepage": "https://github.com/adolecumberri/RPG_Library#readme"
+}

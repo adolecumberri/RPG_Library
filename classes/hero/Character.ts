@@ -309,6 +309,11 @@ export class Character {
         callback(callbackParam);
     };
 
+    setMinDamage = (minDamage: number) => {
+        this.checkMinDamage(minDamage);
+        this.minDamage = minDamage;
+    }
+
     /**
      * set variation checking if it's a correct value.
      * @param {number | IVariation} newVariation 
@@ -358,13 +363,21 @@ export class Character {
         }
 
         //minDamage logic
+        this.checkMinDamage(minDamage)
+
+        //TODO: stats logic.
+        this.checkStatsLogic(stats);
+    }
+
+    checkMinDamage = (minDamage: number) => {
         if (minDamage < 0) {
             throw new Error(M.min_damage_negative);
         }
+    }
 
-        //TODO: stats logic.
+    checkStatsLogic =  (stats: IStats) => {
         if (stats.accuracy === 0 || stats.accuracy < 0) {
-            throw new Error(M.accuracy_zero)
+            throw new Error(M.accuracy_zero);
         }
         if (stats.evasion > 1 || stats.evasion < 0) {
             throw new Error(M.evasion_out_of_bounds);
