@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TemporalEffect = void 0;
-const utils_1 = require("../../utils");
+exports.TemporalStatus = void 0;
+const status_1 = require("./status");
 /**
  *
  * types:   damage - quito vida
@@ -18,23 +18,20 @@ const utils_1 = require("../../utils");
  *
  * Value: integer | Istats
  * */
-class TemporalEffect {
-    constructor({ type, appliedOn = "AFTER_TURN", duration = 1, value }) {
+class TemporalStatus extends status_1.Status {
+    constructor({ type, appliedOn = "AFTER_TURN", duration = 1, value, name = "" }) {
+        super({ appliedOn, type, value });
         this.type = "temporal";
         this.id = 0;
-        this.id = (0, utils_1.uniqueID)();
-        this.checkLogicErrors({ type, appliedOn, duration, value });
+        this.name = "permanent Status";
+        this.checkErrors({ duration });
     }
-    checkLogicErrors({ appliedOn, duration, type, value }) {
-        if (typeof value === "number" && type === "BUFF" || type === "DEBUFF") {
-            throw new Error("Value must be IStats object when type is BUFF or DEBUFF.");
-        }
-        if (typeof value === "object" && type === "DAMAGE" || type === "REGEN") {
-            throw new Error("Value must be a number when type is DAMAGE or REGEN");
-        }
+    use() {
+    }
+    checkErrors({ duration }) {
         if (duration < 1) {
             throw new Error("Duration must be positive.");
         }
     }
 }
-exports.TemporalEffect = TemporalEffect;
+exports.TemporalStatus = TemporalStatus;

@@ -21,7 +21,7 @@ import { isPercentage, percentageToNumber, uniqueID } from '../../utils';
  * @param   stats           Description.
  * @param   variation       Description.
  */
-export class Character {
+ class Character {
 
     actions: IActions;
 
@@ -45,7 +45,7 @@ export class Character {
 
     stats: IStats = {
         accuracy: 1,
-        attack: 0,
+        attack: 1,
         att_interval: 0,
         att_speed: 0,
         crit: 0,
@@ -73,7 +73,7 @@ export class Character {
         stats,
         variation = 0,
         ...args
-    }: IStats) {
+    }: (ICharacterConstructor )) {
 
         //added this.stats default values AND stats from props.
         this.stats = !stats ? this.stats : {
@@ -95,7 +95,7 @@ export class Character {
 
         this.id = id ? id : uniqueID();
 
-        this.actions = actions;
+        this.actions = actions ? actions : {};
         this.minDamage = minDamage;
         this.variation = variation;
         this.deffenceFunction = deffenceFunction ? deffenceFunction : this.deffenceFunction;
@@ -390,3 +390,4 @@ export class Character {
 
 }
 
+export default Character;

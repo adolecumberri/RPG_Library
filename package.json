@@ -4,8 +4,11 @@
   "description": "A library of general utils to make some rpg stuff and practice with JS",
   "main": ".eslint.config.js",
   "directories": {
-    "example": "examples"
+    "example": "examples",
+    "classes": "classes",
+    "constants": "constants"
   },
+  "type": "module",
   "dependencies": {
     "jest": "^27.4.7",
     "typescript": "^4.5.3"

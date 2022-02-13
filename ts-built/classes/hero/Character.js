@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Character = void 0;
 const messages_1 = __importDefault(require("../../constants/messages"));
 const utils_1 = require("../../utils");
 // import { StatsManager } from './fightStatsManager';
@@ -46,7 +45,7 @@ class Character {
         this.kills = 0;
         this.stats = {
             accuracy: 1,
-            attack: 0,
+            attack: 1,
             att_interval: 0,
             att_speed: 0,
             crit: 0,
@@ -57,6 +56,10 @@ class Character {
             hp: 0,
         }; //Todo: apply
         this.variation = 0; //Todo: apply
+        this.setMinDamage = (minDamage) => {
+            this.checkMinDamage(minDamage);
+            this.minDamage = minDamage;
+        };
         /**
          * set variation checking if it's a correct value.
          * @param {number | IVariation} newVariation
@@ -68,6 +71,22 @@ class Character {
         this.rand = (max, min = 0) => Math.round(Math.random() * (max - min) + min);
         //function to load probabilities.
         this.getProb = () => Math.random();
+        this.checkMinDamage = (minDamage) => {
+            if (minDamage < 0) {
+                throw new Error(messages_1.default.min_damage_negative);
+            }
+        };
+        this.checkStatsLogic = (stats) => {
+            if (stats.accuracy === 0 || stats.accuracy < 0) {
+                throw new Error(messages_1.default.accuracy_zero);
+            }
+            if (stats.evasion > 1 || stats.evasion < 0) {
+                throw new Error(messages_1.default.evasion_out_of_bounds);
+            }
+            if (stats.crit > 1 || stats.crit < 0) {
+                throw new Error(messages_1.default.crit_out_of_bounds);
+            }
+        };
         //added this.stats default values AND stats from props.
         this.stats = !stats ? this.stats : Object.assign(Object.assign(Object.assign({}, this.stats), stats), { currentHp: (stats === null || stats === void 0 ? void 0 : stats.currentHp) ?
                 stats.currentHp :
@@ -82,7 +101,7 @@ class Character {
             variation,
         });
         this.id = id ? id : (0, utils_1.uniqueID)();
-        this.actions = actions;
+        this.actions = actions ? actions : {};
         this.minDamage = minDamage;
         this.variation = variation;
         this.deffenceFunction = deffenceFunction ? deffenceFunction : this.deffenceFunction;
@@ -282,19 +301,9 @@ class Character {
             throw new Error(messages_1.default.wrong_id_type);
         }
         //minDamage logic
-        if (minDamage < 0) {
-            throw new Error(messages_1.default.min_damage_negative);
-        }
+        this.checkMinDamage(minDamage);
         //TODO: stats logic.
-        if (stats.accuracy === 0 || stats.accuracy < 0) {
-            throw new Error(messages_1.default.accuracy_zero);
-        }
-        if (stats.evasion > 1 || stats.evasion < 0) {
-            throw new Error(messages_1.default.evasion_out_of_bounds);
-        }
-        if (stats.crit > 1 || stats.crit < 0) {
-            throw new Error(messages_1.default.crit_out_of_bounds);
-        }
+        this.checkStatsLogic(stats);
     }
 }
-exports.Character = Character;
+exports.default = Character;

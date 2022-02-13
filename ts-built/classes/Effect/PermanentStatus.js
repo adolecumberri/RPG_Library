@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PermanentStatus = void 0;
-const utils_1 = require("../../utils");
+const status_1 = require("./status");
 /**
  *
  * types:   damage - quito vida
@@ -18,20 +18,17 @@ const utils_1 = require("../../utils");
  * Value: integer | Istats
  * */
 //This Status will last the whole  fight.
-class PermanentStatus {
-    constructor({ appliedOn, type, value }) {
+class PermanentStatus extends status_1.Status {
+    constructor({ appliedOn, type, value, name = "" }) {
+        super({ appliedOn, type, value });
         this.type = "permanent";
-        this.id = 0;
-        this.id = (0, utils_1.uniqueID)();
-        this.checkLogicErrors({ appliedOn, type, value });
+        //!unused
+        this.checkErrors();
     }
-    checkLogicErrors({ appliedOn, type, value }) {
-        if (typeof value === "number" && type === "BUFF" || type === "DEBUFF") {
-            throw new Error("Value must be IStats object when type is BUFF or DEBUFF.");
-        }
-        if (typeof value === "object" && type === "DAMAGE" || type === "REGEN") {
-            throw new Error("Value must be a number when type is DAMAGE or REGEN");
-        }
+    use() {
+    }
+    //!unused
+    checkErrors() {
     }
 }
 exports.PermanentStatus = PermanentStatus;

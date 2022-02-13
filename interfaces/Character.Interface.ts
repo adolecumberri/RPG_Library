@@ -1,5 +1,6 @@
 import { Character } from "../classes/hero/Character";
 
+
 interface IStats {
     accuracy: number;
     attack: number;
@@ -55,11 +56,14 @@ interface IActions {
     straightDamage?: (character: Character) => any;
 }
 
+
 interface ICharacterConstructor {
-    id: number | string,
-    stats: IConstructorStats,
-    variation: number | IVariation,
-    actions: IActions,
+    id?: number | string,
+    stats?: IConstructorStats,
+    minDamage?: number,
+    variation?: number | IVariation,
+    actions?: IActions,
+    deffenceFunction?: (x:any) => any,
     [x: string]: any
 }
 
