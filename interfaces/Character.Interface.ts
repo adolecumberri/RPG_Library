@@ -1,4 +1,4 @@
-import { Character } from "../classes/hero/Character";
+import Character from "../classes/hero/Character";
 
 
 interface IStats {
