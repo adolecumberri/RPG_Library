@@ -2,7 +2,7 @@ import M from "../constants/messages";
 import { IStats } from "../interfaces";
 
 
-const checkStats = (stats: IStats) => {
+const checkStatsBounds = (stats: IStats) => {
 
     // true === error.
     // false === correct
@@ -62,5 +62,5 @@ const checkStats = (stats: IStats) => {
 
 
 export {
-    checkStats
+    checkStatsBounds
 }
