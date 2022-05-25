@@ -1,8 +1,0 @@
-.idea/
-!.idea/codeStyles/*
-package-lock.json
-compiledjs/
-dist/
-node_modules/
-TS-project-template.iml
-coverage/
