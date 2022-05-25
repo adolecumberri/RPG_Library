@@ -1,32 +1,59 @@
 {
-  "name": "rpg_library",
-  "version": "1.0.0",
-  "description": "A library of general utils to make some rpg stuff and practice with JS",
-  "main": ".eslint.config.js",
-  "directories": {
-    "example": "examples",
-    "classes": "classes",
-    "constants": "constants"
-  },
-  "type": "module",
-  "dependencies": {
-    "jest": "^27.4.7",
-    "ts-loader": "^9.3.0",
-    "typescript": "^4.6.4",
-    "webpack": "^5.72.1",
-    "webpack-cli": "^4.9.2"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/adolecumberri/RPG_Library.git"
-  },
-  "author": "Adolfo Reyes Agustín",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/adolecumberri/RPG_Library/issues"
-  },
-  "homepage": "https://github.com/adolecumberri/RPG_Library#readme"
+    "name": "TS-project-template",
+    "version": "2.0.0",
+    "description": "Simple recipes for building and compiling with the CLI.",
+    "author": {
+        "name": "Tom Raaff",
+        "url": "https://github.com/TomRaaff"
+    },
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/TomRaaff/TS-project-template"
+    },
+    "scripts": {
+        "start": "npm-run-all -p watch server-start",
+        "test": "node_modules/karma/bin/karma start",
+        "clean": "recursive-delete 'dist' && recursive-delete 'compiledjs'",
+        "ts": "tsc",
+        "js": "rollup --config",
+        "css": "node sass.js",
+        "svg": "svgo -f src/svg dist/svg -r --disable=removeViewBox,removeTitle",
+        "img": "imagemin src/img/* --out-dir=dist/img --plugin=pngquant --plugin=mozjpeg --plugin=pngcrush --plugin=zopfli",
+        "copy": "recursive-copy 'src/copy' 'dist'",
+        "build-dirty": "npm run ts && npm-run-all -p js css svg img copy",
+        "build": "npm-run-all -s clean build-dirty",
+        "watch-ts": "chokidar './src/**/*.ts' -c 'npm run ts'",
+        "watch-css": "chokidar './src/**/*.scss' -c 'npm run css'",
+        "watch-js": "chokidar './compiledjs/**/*.js' -c 'npm run js'",
+        "watch-svg": "chokidar './src/**/*.svg' -c 'npm run svg'",
+        "watch-img": "chokidar './src/img/**/*.*' -c 'npm run img'",
+        "watch-copy": "chokidar './src/copy/**/*.*' -c 'npm run copy'",
+        "watch": "npm-run-all -p build watch-ts watch-css watch-js watch-svg watch-img watch-copy",
+        "server-start": "browser-sync start --files 'dist' --server 'dist'"
+    },
+    "devDependencies": {
+        "@rollup/plugin-node-resolve": "^13.0.0",
+        "@types/jasmine": "^3.7.8",
+        "browser-sync": "^2.26.14",
+        "chokidar-cli": "^2.1.0",
+        "imagemin-cli": "^6.0.0",
+        "imagemin-mozjpeg": "^8.0.0",
+        "imagemin-pngcrush": "^6.0.0",
+        "imagemin-pngquant": "^8.0.0",
+        "imagemin-zopfli": "^6.0.0",
+        "jasmine-core": "^3.8.0",
+        "karma": "^6.3.4",
+        "karma-chrome-launcher": "^3.1.0",
+        "karma-jasmine": "^4.0.1",
+        "karma-jasmine-html-reporter": "^1.6.0",
+        "karma-typescript": "^5.5.1",
+        "npm-run-all": "^4.1.5",
+        "recursive-fs": "^2.1.0",
+        "rollup": "^2.6.1",
+        "rollup-plugin-terser": "^7.0.2",
+        "sass": "^1.26.5",
+        "svgo": "^1.3.2",
+        "typescript": "^4.3.5"
+    }
 }
