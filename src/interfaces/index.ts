@@ -1,3 +1,3 @@
-import { ICharacterConstructor, IActions, IStats, IStatusStats, IVariation } from "./Character.Interface";
+import { IActions, IStats, IStatusStats, IVariation } from "./Character.Interface";
 
-export { ICharacterConstructor, IActions, IStats, IStatusStats, IVariation }
+export { IActions, IStats, IStatusStats, IVariation }

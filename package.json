@@ -8,7 +8,7 @@
     "/dist"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -19,5 +19,11 @@
   "bugs": {
     "url": "https://github.com/adolecumberri/RPG_Library/issues"
   },
-  "homepage": "https://github.com/adolecumberri/RPG_Library#readme"
+  "homepage": "https://github.com/adolecumberri/RPG_Library#readme",
+  "devDependencies": {
+    "@types/jest": "^27.5.1",
+    "jest": "^28.1.0",
+    "ts-jest": "^28.0.3",
+    "typescript": "^4.7.2"
+  }
 }

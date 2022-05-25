@@ -1,7 +1,8 @@
 
 import M from '../constants/messages';
-import { IActions, ICharacterConstructor, IStats, IVariation } from '../interfaces'
+import { IActions, IStats, IVariation } from '../interfaces'
 import { isPercentage, percentageToNumber, uniqueID } from '../helper';
+import { checkStats } from '../helper/errorControllers';
 
 // import { StatsManager } from './fightStatsManager';
 
@@ -16,20 +17,40 @@ import { isPercentage, percentageToNumber, uniqueID } from '../helper';
 // * @param {type}   objectVar.key Description of a key in the objectVar parameter.
 // * @return {any}   ejemplo de return.
 
+type ICharacter = {
+    stats?: IStats
+} 
+
 /**
  * @param   id              id.
  * @param   stats           Description.
  * @param   variation       Description.
  */
- class Character {
+class Character {
 
     actions: IActions;
 
     alive: boolean = true;
+    stats: IStats = {
+        accuracy: 1,
+        attack: 1,
+        currentHp: 0,
+        hp: 0,
+    };
 
     [x: string]: any
-    constructor() {
+    constructor(initConfig?: ICharacter) {
 
+        let { stats } = initConfig || {};
+        this.stats = !stats ? this.stats : {
+            ...this.stats,
+            ...stats,
+            currentHp: stats?.currentHp ? stats.currentHp :
+                stats?.hp ? stats.hp : 0
+        };
+
+        this.checkErrors();
+        
     }
 
     rand = (max: number, min = 0) => Math.round(Math.random() * (max - min) + min);
@@ -37,6 +58,9 @@ import { isPercentage, percentageToNumber, uniqueID } from '../helper';
     //function to load probabilities.
     getProb = () => Math.random();
 
+    checkErrors = () =>{
+        checkStats(this.stast);
+    }
 }
 
 export default Character;

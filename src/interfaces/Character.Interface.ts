@@ -2,21 +2,6 @@ import Character from "../classes/Character";
 
 
 interface IStats {
-    accuracy: number;
-    attack: number;
-    att_interval: number;
-    att_speed: number;
-    crit: number;
-    critDamage: number;
-    currentHp: number;
-    deffence: number;
-    evasion: number;
-    hp: number;
-    magicalAttack?: number;
-    [x: string]: any;
-}
-
-interface IConstructorStats {
     accuracy?: number;
     attack?: number;
     att_interval?: number;
@@ -26,8 +11,7 @@ interface IConstructorStats {
     currentHp?: number;
     deffence?: number;
     evasion?: number;
-    hp: number;
-    magicalAttack?: number;
+    hp?: number;
     [x: string]: any;
 }
 
@@ -56,17 +40,6 @@ interface IActions {
     straightDamage?: (character: Character) => any;
 }
 
-
-interface ICharacterConstructor {
-    id?: number | string,
-    stats?: IConstructorStats,
-    minDamage?: number,
-    variation?: number | IVariation,
-    actions?: IActions,
-    deffenceFunction?: (x:any) => any,
-    [x: string]: any
-}
-
 //! Discriminator used to check interface in conditions.
 interface IVariation {
     discriminator: "IVariation",
@@ -74,4 +47,6 @@ interface IVariation {
     minVariation: number
 }
 
-export { IActions, ICharacterConstructor, IStats, IStatusStats, IVariation }
+
+
+export { IActions, IStats, IStatusStats, IVariation }
