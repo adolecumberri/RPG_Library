@@ -15,11 +15,11 @@ const checkStats = (stats: IStats) => {
             isWrong: (value: number) => value < 1,
             errorMessage: M.errors.out_of_bounds.lower_than_one('attack')
         },
-        att_interval: {
+        att_interval: { //bigger === lower
             isWrong: (value: number) => value < 1,
             errorMessage: M.errors.out_of_bounds.lower_than_one('Attack Interval')
         },
-        att_speed: {
+        att_speed: { // bigger === faster
             isWrong: (value: number) => value < 1,
             errorMessage: M.errors.out_of_bounds.lower_than_one('Attack Speed')
         },

@@ -1,7 +1,6 @@
 import Character from '../classes/Character'
 
-it('When a Character is created Checks pass', () => {
 
+describe('Character tests', () => {
     let char = new Character()
-
 })

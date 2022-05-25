@@ -2,7 +2,7 @@
 import M from '../constants/messages';
 import { IActions, IStats, IVariation } from '../interfaces'
 import { isPercentage, percentageToNumber, uniqueID } from '../helper';
-import { checkStats } from '../helper/errorControllers';
+import { checkStatsBounds } from '../helper/errorControllers';
 
 // import { StatsManager } from './fightStatsManager';
 
@@ -59,7 +59,7 @@ class Character {
     getProb = () => Math.random();
 
     checkErrors = () =>{
-        checkStats(this.stast);
+        checkStatsBounds(this.stast);
     }
 }
 
