@@ -7,7 +7,7 @@ interface IStats {
     crit?: number;
     critDamage?: number;
     currentHp?: number;
-    deffence?: number;
+    defence?: number;
     evasion?: number;
     hp?: number;
     [x: string]: any;

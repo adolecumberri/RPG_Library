@@ -6,7 +6,7 @@ interface IStatusStats {
     att_speed?: number;
     crit?: number;
     critDamage?: number;
-    deffence?: number;
+    defence?: number;
     evasion?: number;
     magicalAttack?: number;
 }
