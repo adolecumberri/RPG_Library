@@ -1,12 +1,16 @@
 import M from "../constants/messages";
 import { IStats } from "../interfaces";
 
-
+interface IChecks {
+    [x: keyof IStats]: {
+        isWrong: (value: any) => boolean,
+        errorMessage: string
+    }
+}
 const checkStatsBounds = (stats: IStats) => {
-
     // true === error.
     // false === correct
-    const CHECKS = {
+    const CHECKS: IChecks = {
         accuracy: {
             isWrong: (value: number) => value < 0 || value > 1,
             errorMessage: M.errors.out_of_bounds.between_one_and_zero('accuracy')
@@ -48,7 +52,6 @@ const checkStatsBounds = (stats: IStats) => {
             errorMessage: M.errors.out_of_bounds.lower_than_zero('HP')
         }
     }
-
 
     for (const key in stats) {
         if (CHECKS[key]) {

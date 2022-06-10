@@ -67,5 +67,7 @@ describe('Stats Checker', () => {
         }
     }
 
-    
+    it('empty', () => {
+        expect('').toBe('')
+    })
 })

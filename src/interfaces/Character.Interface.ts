@@ -1,20 +1,5 @@
 import Character from "../classes/Character";
 
-
-interface IStats {
-    accuracy?: number;
-    attack?: number;
-    att_interval?: number;
-    att_speed?: number;
-    crit?: number;
-    critDamage?: number;
-    currentHp?: number;
-    deffence?: number;
-    evasion?: number;
-    hp?: number;
-    [x: string]: any;
-}
-
 interface IStatusStats {
     accuracy?: number;
     attack?: number;
@@ -47,6 +32,4 @@ interface IVariation {
     minVariation: number
 }
 
-
-
-export { IActions, IStats, IStatusStats, IVariation }
+export { IActions, IStatusStats, IVariation }
