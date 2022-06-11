@@ -17,11 +17,11 @@ const CHECKS: IChecks = {
         isWrong: (value: number) => value < 1,
         errorMessage: M.errors.out_of_bounds.lower_than_one('attack')
     },
-    att_interval: { //bigger === lower
+    attack_interval: { //bigger === lower
         isWrong: (value: number) => value < 1,
         errorMessage: M.errors.out_of_bounds.lower_than_one('Attack Interval')
     },
-    att_speed: { // bigger === faster
+    attack_speed: { // bigger === faster
         isWrong: (value: number) => value < 1,
         errorMessage: M.errors.out_of_bounds.lower_than_one('Attack Speed')
     },
@@ -38,7 +38,7 @@ const CHECKS: IChecks = {
         errorMessage: M.errors.out_of_bounds.lower_than_zero('Current HP')
     },
     defence: {
-        isWrong: (value: number) => isNaN(value),
+        isWrong: (value: number) => isNaN(parseInt(value as unknown as string)),
         errorMessage: ''
     },
     evasion: {
@@ -57,11 +57,11 @@ const checkAccuracy = (val: number) => {
 const checkAttack = (val: number) => {
     if ( CHECKS.attack.isWrong(val) ) throw new Error(CHECKS.attack.errorMessage)
 }
-const checkAtt_interval = (val: number) => {
-    if ( CHECKS.att_interval.isWrong(val) ) throw new Error(CHECKS.att_interval.errorMessage)
+const checkAttack_interval = (val: number) => {
+    if ( CHECKS.attack_interval.isWrong(val) ) throw new Error(CHECKS.att_interval.errorMessage)
 }
-const checkAtt_speed = (val: number) => {
-    if ( CHECKS.att_speed.isWrong(val) ) throw new Error(CHECKS.att_speed.errorMessage)
+const checkAttack_speed = (val: number) => {
+    if ( CHECKS.attack_speed.isWrong(val) ) throw new Error(CHECKS.attack_speed.errorMessage)
 }
 const checkCrit = (val: number) => {
     if ( CHECKS.crit.isWrong(val) ) throw new Error(CHECKS.crit.errorMessage)
@@ -104,8 +104,8 @@ const checkStatsBounds = (stats: IStats) => {
 export {
     checkAccuracy,
     checkAttack,
-    checkAtt_interval,
-    checkAtt_speed,
+    checkAttack_interval,
+    checkAttack_speed,
     checkCrit,
     checkCrit_damage,
     checkCurrent_hp,

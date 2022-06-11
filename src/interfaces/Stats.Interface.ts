@@ -2,8 +2,8 @@
 interface IStats {
     accuracy?: number;
     attack?: number;
-    att_interval?: number;
-    att_speed?: number;
+    attack_interval?: number;
+    attack_speed?: number;
     crit?: number;
     critDamage?: number;
     currentHp?: number;
