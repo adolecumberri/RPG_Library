@@ -58,7 +58,7 @@ class Character {
     //function to load probabilities.
     getProb = () => Math.random();
 
-    checkErrors = () =>{
+    checkErrors:()=> void = () =>{
         checkStatsBounds(this.stast);
     }
 }
