@@ -1,6 +1,6 @@
 
 import M from '../constants/messages';
-import { IActions, IStats, IVariation } from '../interfaces'
+import { IActions, IDamageObject, IStats, IVariation } from '../interfaces'
 import { isPercentage, percentageToNumber, uniqueID } from '../helper';
 import { checkStatsBounds } from '../helper/errorControllers';
 
@@ -19,6 +19,7 @@ import { checkStatsBounds } from '../helper/errorControllers';
 
 type ICharacter = {
     stats?: IStats
+    id?: number
 } 
 
 /**
@@ -36,12 +37,15 @@ class Character {
         attack: 1,
         currentHp: 0,
         hp: 0,
+        crit: 0,
+
     };
 
-    [x: string]: any
+    id: number
+
     constructor(initConfig?: ICharacter) {
 
-        let { stats } = initConfig || {};
+        let { stats, id } = initConfig || {};
         this.stats = !stats ? this.stats : {
             ...this.stats,
             ...stats,
@@ -49,9 +53,46 @@ class Character {
                 stats?.hp ? stats.hp : 0
         };
 
+        this.id = id ? id : uniqueID();
+
         this.checkErrors();
         
     }
+
+    attack (
+        callback?: (attackObject: IDamageObject, character: Character) => number
+    ) {
+        let solution: IDamageObject = {
+            value: 0,
+            type: 'normal'
+        }
+
+        let { accuracy, crit, critDamage, attack } = this.stats;
+
+        // let { maxVar, minVar } = this.loadVariation();
+        
+        //does he hit?
+        if (accuracy > this.getProb()) {
+            //critical
+            if (crit > this.getProb()) {
+                solution.value = this.rand(attack * critDamage, attack * critDamage);
+                solution.type = 'critical';
+            } else {
+                // normal hit
+                solution.value = this.rand(attack, attack);
+            }
+        } else {
+            // miss
+            solution.type = 'miss';
+        }
+
+        //if action.attack execute it as this as parameter
+        // let callbackParam = this.actions.attack && this.actions.attack(this);
+
+        callback && callback(solution, this);
+
+        return solution;
+    };
 
     rand = (max: number, min = 0) => Math.round(Math.random() * (max - min) + min);
 
@@ -59,8 +100,9 @@ class Character {
     getProb = () => Math.random();
 
     checkErrors:()=> void = () =>{
-        checkStatsBounds(this.stast);
+        checkStatsBounds(this.stats);
     }
+
 }
 
 export default Character;

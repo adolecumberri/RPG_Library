@@ -1,6 +1,6 @@
 import Character from '../classes/Character'
 
-describe('Character tests', () => {
+describe('Characters are created properly', () => {
 
     const stats = {
         correct_basic_stats: {
@@ -57,12 +57,6 @@ describe('Character tests', () => {
         "stats": expected_basic_stats
     }
     
-    // test('Character Constructor is called', ()=> {
-    //     jest.mock('../classes/Character') // Character is now a mock constructor.
-    //     let char = new Character()
-    //     expect(char).toHaveBeenCalledTimes(1);
-    // })
-
     test('Created Character without params', () => {
         let char = new Character()
 
@@ -75,7 +69,6 @@ describe('Character tests', () => {
         })
 
         expect(typeof char).toBe('object')
-        console.log(char)
         expect (char.stats).toStrictEqual( stats.correct_basic_stats )
     })
 
@@ -88,4 +81,11 @@ describe('Character tests', () => {
         expect(() => char).not.toThrowError(Error)
     })
 
+})
+
+describe('Character attacks', () => {
+    test('Character attacks', () => {
+        let char = new Character()
+
+    })
 })
