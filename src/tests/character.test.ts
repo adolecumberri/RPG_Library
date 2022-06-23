@@ -109,4 +109,14 @@ describe('Character attacks', () => {
 
         expect(char.attack()).toStrictEqual(ATTACKS.CRITICAL)
     })
+
+    test('Character callback works', () => {
+        let char = new Character()
+        let solution ;
+        char.attack( (attackObject) => {
+            solution = {...attackObject }
+            solution.value += 2;
+        })
+        expect(solution).toStrictEqual({ type: "normal", value: 3 })
+    })
 })

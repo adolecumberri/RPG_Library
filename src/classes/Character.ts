@@ -70,7 +70,7 @@ class Character {
      * @returns Damage Object
      */
     attack(
-        callback?: (attackObject: IDamageObject, character: Character) => number
+        callback?: (attackObject?: IDamageObject, character?: Character) => void
     ) {
         let solution: IDamageObject = {
             value: 0,
