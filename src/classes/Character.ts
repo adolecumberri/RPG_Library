@@ -1,6 +1,6 @@
 
 import M from '../constants/messages';
-import { IActions, IStats, IVariation } from '../interfaces'
+import { IActions, IDamageObject, IStats, IVariation } from '../interfaces'
 import { isPercentage, percentageToNumber, uniqueID } from '../helper';
 import { checkStatsBounds } from '../helper/errorControllers';
 
@@ -19,7 +19,8 @@ import { checkStatsBounds } from '../helper/errorControllers';
 
 type ICharacter = {
     stats?: IStats
-} 
+    id?: number
+}
 
 /**
  * @param   id              id.
@@ -34,33 +35,78 @@ class Character {
     stats: IStats = {
         accuracy: 1,
         attack: 1,
-        currentHp: 0,
+        current_hp: 0,
         hp: 0,
+        crit: 0,
+        crit_multiplier: 1
+
     };
 
-    [x: string]: any
+    id: number
+
     constructor(initConfig?: ICharacter) {
 
-        let { stats } = initConfig || {};
+        let { stats, id } = initConfig || {};
         this.stats = !stats ? this.stats : {
             ...this.stats,
             ...stats,
-            currentHp: stats?.currentHp ? stats.currentHp :
+            current_hp: stats?.current_hp ? stats.current_hp :
                 stats?.hp ? stats.hp : 0
         };
 
+        this.id = id ? id : uniqueID();
+
         this.checkErrors();
-        
+
     }
+
+    /**
+     * 
+     * @param callback 
+     * Calculates attacks. 
+     * is Missing? attack = 0. 
+     * is Critical? attack * crit_multiplier. 
+     * normal attack? attack returned. 
+     * @returns Damage Object
+     */
+    attack(
+        callback?: (attackObject?: IDamageObject, character?: Character) => void
+    ) {
+        let solution: IDamageObject = {
+            value: 0,
+            type: 'normal'
+        }
+
+        let { accuracy, crit, crit_multiplier, attack } = this.stats;
+
+        //does he hit?
+        if (accuracy < this.getProb()) {
+            // miss
+            solution.type = 'miss';
+        } else {
+            //critical
+            if (crit > this.getProb()) {
+                solution.value = attack * crit_multiplier;
+                solution.type = 'critical';
+            } else {
+                // normal hit
+                solution.value = attack;
+            }
+        }
+
+        callback && callback(solution, this);
+        return solution;
+    };
 
     rand = (max: number, min = 0) => Math.round(Math.random() * (max - min) + min);
 
     //function to load probabilities.
     getProb = () => Math.random();
 
-    checkErrors = () =>{
-        checkStatsBounds(this.stast);
+    checkErrors: () => void = () => {
+        checkStatsBounds(this.stats);
     }
+
 }
 
 export default Character;

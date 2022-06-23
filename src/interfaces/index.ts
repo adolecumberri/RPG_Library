@@ -1,3 +1,4 @@
-import { IActions, IStats, IStatusStats, IVariation } from "./Character.Interface";
+import { IActions, IStats, IVariation } from "./Character.Interface";
+import { IDamageObject } from './Common.interface'
 
-export { IActions, IStats, IStatusStats, IVariation }
+export { IActions, IStats, IVariation, IDamageObject }

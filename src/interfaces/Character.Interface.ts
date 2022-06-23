@@ -4,26 +4,14 @@ import Character from "../classes/Character";
 interface IStats {
     accuracy?: number;
     attack?: number;
-    att_interval?: number;
-    att_speed?: number;
+    attack_interval?: number;
+    attack_speed?: number;
     crit?: number;
-    critDamage?: number;
-    currentHp?: number;
+    crit_multiplier?: number;
+    current_hp?: number;
     deffence?: number;
     evasion?: number;
     hp?: number;
-    [x: string]: any;
-}
-
-interface IStatusStats {
-    accuracy?: number;
-    attack?: number;
-    att_speed?: number;
-    crit?: number;
-    critDamage?: number;
-    deffence?: number;
-    evasion?: number;
-    magicalAttack?: number;
 }
 
 interface IActions {
@@ -43,10 +31,8 @@ interface IActions {
 //! Discriminator used to check interface in conditions.
 interface IVariation {
     discriminator: "IVariation",
-    maxVariation: number,
-    minVariation: number
+    max: number,
+    min: number
 }
 
-
-
-export { IActions, IStats, IStatusStats, IVariation }
+export { IActions, IStats, IVariation }
