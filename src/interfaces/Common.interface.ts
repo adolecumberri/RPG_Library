@@ -1,7 +1,7 @@
 
 interface IDamageObject{
 	value: number
-	type: 'normal' | 'critical' | 'true' | 'miss' | 'skill'
+	type: 'normal' | 'critical' | 'miss'
 }
 
 export {

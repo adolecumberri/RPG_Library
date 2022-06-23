@@ -8,8 +8,8 @@ describe('Stats Checker', () => {
             att_interval: 1,
             att_speed: 1,
             crit: 0,
-            critDamage: 1,
-            currentHp: 0,
+            crit_multiplier: 1,
+            current_hp: 0,
             deffence: 0,
             evasion: 0,
             hp: 0,
@@ -20,8 +20,8 @@ describe('Stats Checker', () => {
             att_interval: 8781,
             att_speed: 987871,
             crit: 1,
-            critDamage: 1242431,
-            currentHp: 1223232,
+            crit_multiplier: 1242431,
+            current_hp: 1223232,
             deffence: 12321332,
             evasion: 1,
             hp: 242322,
@@ -47,8 +47,8 @@ describe('Stats Checker', () => {
         wrong_higher_crit: { // is a % 0-1
             crit: 2,
         },
-        wrong_crit_damage: { //crit damage is a multiplier.
-            crit_damage: 0,
+        wrong_crit_multiplier: { //crit damage is a multiplier.
+            crit_multiplier: 0,
         },
         wrong_current_hp: {
             current_hp: -41,

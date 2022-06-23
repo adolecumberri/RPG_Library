@@ -7,12 +7,11 @@ interface IStats {
     attack_interval?: number;
     attack_speed?: number;
     crit?: number;
-    crit_damage?: number;
+    crit_multiplier?: number;
     current_hp?: number;
     deffence?: number;
     evasion?: number;
     hp?: number;
-    [x: string]: any;
 }
 
 interface IActions {

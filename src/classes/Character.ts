@@ -20,7 +20,7 @@ import { checkStatsBounds } from '../helper/errorControllers';
 type ICharacter = {
     stats?: IStats
     id?: number
-} 
+}
 
 /**
  * @param   id              id.
@@ -35,9 +35,10 @@ class Character {
     stats: IStats = {
         accuracy: 1,
         attack: 1,
-        currentHp: 0,
+        current_hp: 0,
         hp: 0,
         crit: 0,
+        crit_multiplier: 1
 
     };
 
@@ -49,17 +50,26 @@ class Character {
         this.stats = !stats ? this.stats : {
             ...this.stats,
             ...stats,
-            currentHp: stats?.currentHp ? stats.currentHp :
+            current_hp: stats?.current_hp ? stats.current_hp :
                 stats?.hp ? stats.hp : 0
         };
 
         this.id = id ? id : uniqueID();
 
         this.checkErrors();
-        
+
     }
 
-    attack (
+    /**
+     * 
+     * @param callback 
+     * Calculates attacks. 
+     * is Missing? attack = 0. 
+     * is Critical? attack * crit_multiplier. 
+     * normal attack? attack returned. 
+     * @returns Damage Object
+     */
+    attack(
         callback?: (attackObject: IDamageObject, character: Character) => number
     ) {
         let solution: IDamageObject = {
@@ -67,30 +77,24 @@ class Character {
             type: 'normal'
         }
 
-        let { accuracy, crit, critDamage, attack } = this.stats;
+        let { accuracy, crit, crit_multiplier, attack } = this.stats;
 
-        // let { maxVar, minVar } = this.loadVariation();
-        
         //does he hit?
-        if (accuracy > this.getProb()) {
+        if (accuracy < this.getProb()) {
+            // miss
+            solution.type = 'miss';
+        } else {
             //critical
             if (crit > this.getProb()) {
-                solution.value = this.rand(attack * critDamage, attack * critDamage);
+                solution.value = attack * crit_multiplier;
                 solution.type = 'critical';
             } else {
                 // normal hit
-                solution.value = this.rand(attack, attack);
+                solution.value = attack;
             }
-        } else {
-            // miss
-            solution.type = 'miss';
         }
 
-        //if action.attack execute it as this as parameter
-        // let callbackParam = this.actions.attack && this.actions.attack(this);
-
         callback && callback(solution, this);
-
         return solution;
     };
 
@@ -99,7 +103,7 @@ class Character {
     //function to load probabilities.
     getProb = () => Math.random();
 
-    checkErrors:()=> void = () =>{
+    checkErrors: () => void = () => {
         checkStatsBounds(this.stats);
     }
 
