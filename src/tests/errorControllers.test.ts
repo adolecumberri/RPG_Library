@@ -12,53 +12,16 @@ import {
     checkStatsBounds
 } from '../helper/errorControllers'
 
+import { TESTING_STATS as stats} from '../constants/stats'
+
 describe('Stats Checker', () => {
-    const stast = {
-        correct_basic_stats: {
-            accuracy: 1,
-            attack: 1,
-            attack_interval: 1,
-            attack_speed: 1,
-            crit: 0,
-            critDamage: 1,
-            currentHp: 0,
-            defence: 0,
-            evasion: 0,
-            hp: 0,
-        },
-        correct_high_stats: {
-            accuracy: 0.89,
-            attack: 1545454,
-            attack_interval: 8781,
-            attack_speed: 987871,
-            crit: 1,
-            critDamage: 1242431,
-            currentHp: 1223232,
-            defence: 12321332,
-            evasion: 1,
-            hp: 242322,
-        },
-        wrong_lower_accuracy: -11,
-        wrong_higher_accuracy: 12,
-        wrong_attack: -1,
-        wrong_attack_interval: -1,
-        wrong_attack_speed: -1,
-        wrong_lower_crit: -21,
-        wrong_higher_crit: 2,
-        wrong_crit_damage: 0,
-        wrong_current_hp: -41,
-        wrong_defence: null,
-        wrong_lower_evasion: -2,
-        wrong_higher_evasion: 15,
-        wrong_hp: -481,
-    }
 
     it('check all stats and works', () => {
-        expect(checkStatsBounds(stast.correct_basic_stats)).toBeUndefined()
+        expect(checkStatsBounds(stats.correct_basic_stats)).toBeUndefined()
     })
 
     it('check all high stats and works', () => {
-        expect(checkStatsBounds(stast.correct_high_stats)).toBeUndefined()
+        expect(checkStatsBounds(stats.correct_high_stats)).toBeUndefined()
     })
 
     describe('Accuracy checks', () => {
@@ -67,11 +30,11 @@ describe('Stats Checker', () => {
         })
 
         it('low Accuracy fails', () => {
-            expect(() => checkAccuracy(stast.wrong_lower_accuracy)).toThrowError(Error)
+            expect(() => checkAccuracy(stats.wrong_lower_accuracy)).toThrowError(Error)
         })
 
         it('high Accuracy fails', () => {
-            expect(() => checkAccuracy(stast.wrong_higher_accuracy)).toThrowError(Error)
+            expect(() => checkAccuracy(stats.wrong_higher_accuracy)).toThrowError(Error)
         })
     })
 
@@ -81,7 +44,7 @@ describe('Stats Checker', () => {
         })
 
         it('wrong Attack fails', () => {
-            expect(() => checkAttack(stast.wrong_attack)).toThrowError(Error)
+            expect(() => checkAttack(stats.wrong_attack)).toThrowError(Error)
         })
     })
 
@@ -91,7 +54,7 @@ describe('Stats Checker', () => {
         })
 
         it('wrong Attack fails', () => {
-            expect(() => checkAttack_interval(stast.wrong_attack_interval)).toThrowError(Error)
+            expect(() => checkAttack_interval(stats.wrong_attack_interval)).toThrowError(Error)
         })
     })
 
@@ -101,7 +64,7 @@ describe('Stats Checker', () => {
         })
 
         it('wrong Attack fails', () => {
-            expect(() => checkAttack_speed(stast.wrong_attack_speed)).toThrowError(Error)
+            expect(() => checkAttack_speed(stats.wrong_attack_speed)).toThrowError(Error)
         })
     })
 
@@ -111,11 +74,11 @@ describe('Stats Checker', () => {
         })
 
         it('wrong lower Attack fails', () => {
-            expect(() => checkCrit(stast.wrong_lower_crit)).toThrowError(Error)
+            expect(() => checkCrit(stats.wrong_lower_crit)).toThrowError(Error)
         })
 
         it('wrong higher Attack fails', () => {
-            expect(() => checkCrit(stast.wrong_higher_crit)).toThrowError(Error)
+            expect(() => checkCrit(stats.wrong_higher_crit)).toThrowError(Error)
         })
     })
 
@@ -125,7 +88,7 @@ describe('Stats Checker', () => {
         })
 
         it(' Crit damage fails', () => {
-            expect(() => checkCrit_damage(stast.wrong_crit_damage)).toThrowError(Error)
+            expect(() => checkCrit_damage(stats.wrong_crit_damage)).toThrowError(Error)
         })
     })
 
@@ -135,7 +98,7 @@ describe('Stats Checker', () => {
         })
 
         it('check Curren hp fails', () => {
-            expect(() => checkCurrent_hp(stast.wrong_current_hp)).toThrowError(Error)
+            expect(() => checkCurrent_hp(stats.wrong_current_hp)).toThrowError(Error)
         })
     })
 
@@ -145,7 +108,7 @@ describe('Stats Checker', () => {
         })
 
         it('check Defence fails', () => {
-            expect(() => checkDefence(stast.wrong_defence)).toThrowError(Error)
+            expect(() => checkDefence(stats.wrong_defence)).toThrowError(Error)
         })
     })
 
@@ -155,11 +118,11 @@ describe('Stats Checker', () => {
         })
 
         it('check low Evasion fails', () => {
-            expect(() => checkEvasion(stast.wrong_lower_evasion)).toThrowError(Error)
+            expect(() => checkEvasion(stats.wrong_lower_evasion)).toThrowError(Error)
         })
 
         it('check high Evasion fails', () => {
-            expect(() => checkEvasion(stast.wrong_higher_evasion)).toThrowError(Error)
+            expect(() => checkEvasion(stats.wrong_higher_evasion)).toThrowError(Error)
         })
     })
 
@@ -169,7 +132,7 @@ describe('Stats Checker', () => {
         })
 
         it('check hp fails', () => {
-            expect(() => checkHp(stast.wrong_hp)).toThrowError(Error)
+            expect(() => checkHp(stats.wrong_hp)).toThrowError(Error)
         })
     })
 
