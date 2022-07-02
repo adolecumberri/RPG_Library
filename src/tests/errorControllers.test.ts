@@ -4,7 +4,7 @@ import {
     checkAttack_interval,
     checkAttack_speed,
     checkCrit,
-    checkCrit_damage,
+    checkCrit_multiplier,
     checkCurrent_hp,
     checkDefence,
     checkEvasion,
@@ -84,11 +84,11 @@ describe('Stats Checker', () => {
 
     describe('Crit damage checks', () => {
         it('Crit damage Works', () => {
-            expect(checkCrit_damage(2)).toBeUndefined()
+            expect(checkCrit_multiplier(2)).toBeUndefined()
         })
 
         it(' Crit damage fails', () => {
-            expect(() => checkCrit_damage(stats.wrong_crit_damage)).toThrowError(Error)
+            expect(() => checkCrit_multiplier(stats.wrong_crit_multiplier)).toThrowError(Error)
         })
     })
 

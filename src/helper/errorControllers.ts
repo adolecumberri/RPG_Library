@@ -1,12 +1,12 @@
 import M from "../constants/messages";
 import { IStats } from "../interfaces";
 
-interface IChecks {
-    [x: keyof IStats]: {
-        isWrong: (value: any) => boolean,
-        errorMessage: string
-    }
-}
+type IChecks = {
+    [x in keyof IStats]: {
+        isWrong: (value: any) => boolean;
+        errorMessage: string;
+    };
+};
 
 const CHECKS: IChecks = {
     accuracy: {
@@ -29,7 +29,7 @@ const CHECKS: IChecks = {
         isWrong: (value: number) => value < 0 || value > 1,
         errorMessage: M.errors.out_of_bounds.between_one_and_zero('crit')
     },
-    crit_damage: {
+    crit_multiplier: {
         isWrong: (value: number) => value < 1,
         errorMessage: M.errors.out_of_bounds.lower_than_one('Critical Damage')
     },
@@ -58,7 +58,7 @@ const checkAttack = (val: number) => {
     if ( CHECKS.attack.isWrong(val) ) throw new Error(CHECKS.attack.errorMessage)
 }
 const checkAttack_interval = (val: number) => {
-    if ( CHECKS.attack_interval.isWrong(val) ) throw new Error(CHECKS.att_interval.errorMessage)
+    if ( CHECKS.attack_interval.isWrong(val) ) throw new Error(CHECKS.attack_interval.errorMessage)
 }
 const checkAttack_speed = (val: number) => {
     if ( CHECKS.attack_speed.isWrong(val) ) throw new Error(CHECKS.attack_speed.errorMessage)
@@ -66,8 +66,8 @@ const checkAttack_speed = (val: number) => {
 const checkCrit = (val: number) => {
     if ( CHECKS.crit.isWrong(val) ) throw new Error(CHECKS.crit.errorMessage)
 }
-const checkCrit_damage = (val: number) => {
-    if ( CHECKS.crit_damage.isWrong(val) ) throw new Error(CHECKS.crit_damage.errorMessage)
+const checkCrit_multiplier = (val: number) => {
+    if ( CHECKS.crit_multiplier.isWrong(val) ) throw new Error(CHECKS.crit_multiplier.errorMessage)
 }
 const checkCurrent_hp = (val: number) => {
     if ( CHECKS.current_hp.isWrong(val) ) throw new Error(CHECKS.current_hp.errorMessage)
@@ -89,10 +89,6 @@ const checkStatsBounds = (stats: IStats) => {
     for (const key in stats) {
         if (CHECKS[key]) {
             if (CHECKS[key].isWrong(stats[key])) {
-                console.log({
-                    key,
-                    message: CHECKS[key].errorMessage
-                })
                 throw new Error(CHECKS[key].errorMessage)
             }
         }
@@ -107,7 +103,7 @@ export {
     checkAttack_interval,
     checkAttack_speed,
     checkCrit,
-    checkCrit_damage,
+    checkCrit_multiplier,
     checkCurrent_hp,
     checkDefence,
     checkEvasion, 
