@@ -17,16 +17,16 @@ import { TESTING_STATS as stats} from '../constants/stats'
 describe('Stats Checker', () => {
 
     it('check all stats and works', () => {
-        expect(checkStatsBounds(stats.correct_basic_stats)).toBeUndefined()
+        expect(checkStatsBounds(stats.correct_basic_stats)).not.toThrowError()
     })
 
     it('check all high stats and works', () => {
-        expect(checkStatsBounds(stats.correct_high_stats)).toBeUndefined()
+        expect(checkStatsBounds(stats.correct_high_stats)).not.toThrowError()
     })
 
     describe('Accuracy checks', () => {
         it('checkAccuracy Works', () => {
-            expect(checkAccuracy(0.5)).toBeUndefined()
+            expect(checkAccuracy(0.5)).not.toThrowError()
         })
 
         it('low Accuracy fails', () => {
@@ -40,7 +40,7 @@ describe('Stats Checker', () => {
 
     describe('Attack checks', () => {
         it('checkAttack Works', () => {
-            expect(checkAttack(1.5)).toBeUndefined()
+            expect(checkAttack(1.5)).not.toThrowError()
         })
 
         it('wrong Attack fails', () => {
@@ -50,7 +50,7 @@ describe('Stats Checker', () => {
 
     describe('Attack Interval checks', () => {
         it('checkAttack_interval Works', () => {
-            expect(checkAttack_interval(3)).toBeUndefined()
+            expect(checkAttack_interval(3)).not.toThrowError()
         })
 
         it('wrong Attack fails', () => {
@@ -60,7 +60,7 @@ describe('Stats Checker', () => {
 
     describe('Attack Speed checks', () => {
         it('checkAttack_speed Works', () => {
-            expect(checkAttack_speed(3)).toBeUndefined()
+            expect(checkAttack_speed(3)).not.toThrowError()
         })
 
         it('wrong Attack fails', () => {
@@ -70,7 +70,7 @@ describe('Stats Checker', () => {
 
     describe('Crit ratio multiplier checks', () => {
         it('Crit ratio Works', () => {
-            expect(checkCrit(0.5)).toBeUndefined()
+            expect(checkCrit(0.5)).not.toThrowError()
         })
 
         it('wrong lower Attack fails', () => {
@@ -84,7 +84,7 @@ describe('Stats Checker', () => {
 
     describe('Crit damage checks', () => {
         it('Crit damage Works', () => {
-            expect(checkCrit_multiplier(2)).toBeUndefined()
+            expect(checkCrit_multiplier(2)).not.toThrowError()
         })
 
         it(' Crit damage fails', () => {
@@ -94,7 +94,7 @@ describe('Stats Checker', () => {
 
     describe('check Curren hp checks', () => {
         it('check Curren hp Works', () => {
-            expect(checkCurrent_hp(100)).toBeUndefined()
+            expect(checkCurrent_hp(100)).not.toThrowError()
         })
 
         it('check Curren hp fails', () => {
@@ -104,7 +104,7 @@ describe('Stats Checker', () => {
 
     describe('check Defence checks', () => {
         it('check Defence Works', () => {
-            expect(checkDefence(100)).toBeUndefined()
+            expect(checkDefence(100)).not.toThrowError()
         })
 
         it('check Defence fails', () => {
@@ -114,7 +114,7 @@ describe('Stats Checker', () => {
 
     describe('check Evasion checks', () => {
         it('check Evasion Works', () => {
-            expect(checkEvasion(0.8)).toBeUndefined()
+            expect(checkEvasion(0.8)).not.toThrowError()
         })
 
         it('check low Evasion fails', () => {
@@ -128,7 +128,7 @@ describe('Stats Checker', () => {
 
     describe('check hp checks', () => {
         it('check hp Works', () => {
-            expect(checkHp(1)).toBeUndefined()
+            expect(checkHp(1)).not.toThrowError()
         })
 
         it('check hp fails', () => {
