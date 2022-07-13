@@ -3,7 +3,7 @@ import M from '../constants/messages';
 import { IActions, IDamageObject, IStats, IVariation } from '../interfaces'
 import { isPercentage, percentageToNumber, uniqueID } from '../helper';
 import { checkStatsBounds } from '../helper/errorControllers';
-
+import discriminators from '../constants/discriminators'
 // import { StatsManager } from './fightStatsManager';
 
 //TODOS: add Spells.
@@ -32,6 +32,9 @@ class Character {
     actions: IActions;
 
     alive: boolean = true;
+
+    discriminator = discriminators.CHARACTER
+
     stats: IStats = {
         accuracy: 1,
         attack: 1,
@@ -61,7 +64,6 @@ class Character {
     }
 
     /**
-     * 
      * @param callback 
      * Calculates attacks. 
      * is Missing? attack = 0. 
@@ -73,6 +75,7 @@ class Character {
         callback?: (attackObject?: IDamageObject, character?: Character) => void
     ) {
         let solution: IDamageObject = {
+            discriminator: discriminators.ATTACK_OBJECT,
             value: 0,
             type: 'normal'
         }
@@ -83,20 +86,47 @@ class Character {
         if (accuracy < this.getProb()) {
             // miss
             solution.type = 'miss';
-        } else {
+        } else if (crit > this.getProb()) {
             //critical
-            if (crit > this.getProb()) {
-                solution.value = attack * crit_multiplier;
-                solution.type = 'critical';
-            } else {
-                // normal hit
-                solution.value = attack;
-            }
+            solution.value = attack * crit_multiplier;
+            solution.type = 'critical';
+        } else {
+            // normal hit
+            solution.value = attack;
         }
 
         callback && callback(solution, this);
         return solution;
     };
+
+	defend: (data: any) => any = (enemi) => {
+		// let { id, hp, currentHp, name, surname, def, evasion } = this.stats;
+		// let finalDamage = 0;
+
+		// if (evasion <= this.getProb()) {
+		// 	//Evade o no.
+		// 	let enemiAttack = enemi.attack();
+		// 	let attMultiplier = 40 / (40 + def);
+		// 	finalDamage = Math.round(enemiAttack * attMultiplier);
+
+		// 	//Stats
+		// 	enemi.fightStats.set('total_damage', enemi.fightStats.get('total_damage') + finalDamage);
+		// 	this.fightStats.addHitReceived();
+		// } else {
+		// 	enemi.calcNextTurn(enemi.heroEfects.att_interval);
+
+		// 	//stats
+		// 	this.fightStats.addEvasion();
+		// }
+
+		// this.heroStats.currentHp = currentHp - finalDamage >= 0 ? currentHp - finalDamage : 0; //
+		// //stats
+		// this.fightStats.set('currhp', this.heroStats.currentHp);
+		// if (this.heroStats.currentHp === 0) {
+		// 	this.isDead = true;
+		// }
+	};
+
 
     rand = (max: number, min = 0) => Math.round(Math.random() * (max - min) + min);
 
