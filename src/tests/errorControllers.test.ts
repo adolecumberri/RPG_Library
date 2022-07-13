@@ -12,21 +12,21 @@ import {
     checkStatsBounds
 } from '../helper/errorControllers'
 
-import { TESTING_STATS as stats} from '../constants/stats'
+import { TESTING_STATS as stats } from '../constants/stats'
 
 describe('Stats Checker', () => {
 
     it('check all stats and works', () => {
-        expect(checkStatsBounds(stats.correct_basic_stats)).not.toThrowError()
+        expect(() => checkStatsBounds(stats.correct_basic_stats)).not.toThrowError(Error)
     })
 
     it('check all high stats and works', () => {
-        expect(checkStatsBounds(stats.correct_high_stats)).not.toThrowError()
+        expect(() => checkStatsBounds(stats.correct_high_stats)).not.toThrowError(Error)
     })
 
     describe('Accuracy checks', () => {
         it('checkAccuracy Works', () => {
-            expect(checkAccuracy(0.5)).not.toThrowError()
+            expect(() => checkAccuracy(0.5)).not.toThrowError(Error)
         })
 
         it('low Accuracy fails', () => {
@@ -40,7 +40,7 @@ describe('Stats Checker', () => {
 
     describe('Attack checks', () => {
         it('checkAttack Works', () => {
-            expect(checkAttack(1.5)).not.toThrowError()
+            expect(() => checkAttack(1.5)).not.toThrowError(Error)
         })
 
         it('wrong Attack fails', () => {
@@ -50,7 +50,7 @@ describe('Stats Checker', () => {
 
     describe('Attack Interval checks', () => {
         it('checkAttack_interval Works', () => {
-            expect(checkAttack_interval(3)).not.toThrowError()
+            expect(() => checkAttack_interval(3)).not.toThrowError(Error)
         })
 
         it('wrong Attack fails', () => {
@@ -60,7 +60,7 @@ describe('Stats Checker', () => {
 
     describe('Attack Speed checks', () => {
         it('checkAttack_speed Works', () => {
-            expect(checkAttack_speed(3)).not.toThrowError()
+            expect(() => checkAttack_speed(3)).not.toThrowError(Error)
         })
 
         it('wrong Attack fails', () => {
@@ -70,7 +70,7 @@ describe('Stats Checker', () => {
 
     describe('Crit ratio multiplier checks', () => {
         it('Crit ratio Works', () => {
-            expect(checkCrit(0.5)).not.toThrowError()
+            expect(() => checkCrit(0.5)).not.toThrowError(Error)
         })
 
         it('wrong lower Attack fails', () => {
@@ -84,7 +84,7 @@ describe('Stats Checker', () => {
 
     describe('Crit damage checks', () => {
         it('Crit damage Works', () => {
-            expect(checkCrit_multiplier(2)).not.toThrowError()
+            expect(() => checkCrit_multiplier(2)).not.toThrowError(Error)
         })
 
         it(' Crit damage fails', () => {
@@ -94,7 +94,7 @@ describe('Stats Checker', () => {
 
     describe('check Curren hp checks', () => {
         it('check Curren hp Works', () => {
-            expect(checkCurrent_hp(100)).not.toThrowError()
+            expect(() => checkCurrent_hp(100)).not.toThrowError(Error)
         })
 
         it('check Curren hp fails', () => {
@@ -104,7 +104,7 @@ describe('Stats Checker', () => {
 
     describe('check Defence checks', () => {
         it('check Defence Works', () => {
-            expect(checkDefence(100)).not.toThrowError()
+            expect(() => checkDefence(100)).not.toThrowError(Error)
         })
 
         it('check Defence fails', () => {
@@ -114,7 +114,7 @@ describe('Stats Checker', () => {
 
     describe('check Evasion checks', () => {
         it('check Evasion Works', () => {
-            expect(checkEvasion(0.8)).not.toThrowError()
+            expect(() => checkEvasion(0.8)).not.toThrowError(Error)
         })
 
         it('check low Evasion fails', () => {
@@ -128,7 +128,7 @@ describe('Stats Checker', () => {
 
     describe('check hp checks', () => {
         it('check hp Works', () => {
-            expect(checkHp(1)).not.toThrowError()
+            expect(() => checkHp(1)).not.toThrowError(Error)
         })
 
         it('check hp fails', () => {
