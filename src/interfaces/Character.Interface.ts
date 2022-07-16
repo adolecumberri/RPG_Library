@@ -1,6 +1,5 @@
 import Character from "../classes/Character";
 
-
 interface IStats {
     accuracy?: number;
     attack?: number;
@@ -9,7 +8,7 @@ interface IStats {
     crit?: number;
     crit_multiplier?: number;
     current_hp?: number;
-    deffence?: number;
+    defence?: number;
     evasion?: number;
     hp?: number;
 }
