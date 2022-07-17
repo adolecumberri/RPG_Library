@@ -12,7 +12,7 @@ describe('Characters are created properly', () => {
             crit: 0,
             crit_multiplier: 1,
             current_hp: 0,
-            deffence: 0,
+            defence: 0,
             evasion: 0,
             hp: 0,
         },
@@ -24,7 +24,7 @@ describe('Characters are created properly', () => {
             crit: -1,
             crit_multiplier: 0,
             current_hp: -9,
-            deffence: 0,
+            defence: 0,
             evasion: -9,
             hp: -4,
         },
@@ -46,7 +46,7 @@ describe('Characters are created properly', () => {
         "crit": 0,
         "crit_multiplier": 1,
         "current_hp": 0,
-        "deffence": 0,
+        "defence": 0,
         "evasion": 0,
         "hp": 0
     }
@@ -76,12 +76,9 @@ describe('Characters are created properly', () => {
     })
 
     test('Created Character with wrong Stats', () => {
-        let char = new Character({
+        expect(() => new Character({
             constructorStats: stats.incorrect_high_stats
-        })
-
-        //TODO: when error bransh will be pushed, this will work.
-        expect(() => char).toThrowError(Error)
+        })).toThrowError(Error)
     })
 })
 

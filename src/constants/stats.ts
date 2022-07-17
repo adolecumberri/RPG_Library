@@ -1,3 +1,5 @@
+import { IStats } from "../interfaces"
+
 const TESTING_STATS = {
     correct_basic_stats: {
         accuracy: 1,
@@ -5,24 +7,24 @@ const TESTING_STATS = {
         attack_interval: 1,
         attack_speed: 1,
         crit: 0,
-        critDamage: 1,
+        crit_multiplier: 1,
         current_hp: 0,
         defence: 0,
         evasion: 0,
         hp: 0,
-    },
+    } as IStats,
     correct_high_stats: {
         accuracy: 0.89,
         attack: 1545454,
         attack_interval: 8781,
         attack_speed: 987871,
         crit: 1,
-        critDamage: 1242431,
+        crit_multiplier: 1242431,
         current_hp: 1223232,
         defence: 12321332,
         evasion: 1,
         hp: 242322,
-    },
+    } as IStats,
     wrong_lower_accuracy: -11,
     wrong_higher_accuracy: 12,
     wrong_attack: -1,
