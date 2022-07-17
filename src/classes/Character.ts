@@ -6,6 +6,7 @@ import { checkStatsBounds } from '../helper/errorControllers';
 import discriminators from '../constants/discriminators';
 import { IAttackObject, IDefenceObject } from '../interfaces/Common.interface';
 import { DEFAULT_ATTACK_OBJECT, DEFAULT_DEFENCE_OBJECT } from '../constants/defaults';
+import { IDefenceFunction } from '../interfaces/Character.Interface';
 
 
 // * @param {type}   var           Description.
@@ -18,23 +19,30 @@ import { DEFAULT_ATTACK_OBJECT, DEFAULT_DEFENCE_OBJECT } from '../constants/defa
 type ICharacter = {
     constructorStats?: Partial<IStats>
     id?: number
-    defenceFunction?: (...args: any[]) => IDefenceObject
+    defenceFunction?: (...args: any[]) => IDefenceObject,
+    minDamageDealt?: number
 }
 
 class Character {
 
     actions: IActions;
 
-    defenceFunction = (attackObject: IAttackObject) => {
+    #defenceFunction: IDefenceFunction = (attackObject: IAttackObject) => {
         //default defence object
         let defenceObject = DEFAULT_DEFENCE_OBJECT
 
         //calculated damage after defence is substracted
+        console.log({
+            a:attackObject.value - this.stats.defence,
+            b: attackObject.value ,
+            c: this.stats.defence,
+            d: this.minDamageDealt
+        })
         defenceObject.value = attackObject.value - this.stats.defence
 
         //if min_damage is set AND damage dealt is lower than min_damage, damage dealt = min_damage
-        if (this.min_damage_dealt && defenceObject.value <= Number(this.min_damage_dealt))
-            defenceObject.value = this.min_damage_dealt
+        if (this.minDamageDealt && defenceObject.value <= Number(this.minDamageDealt))
+            defenceObject.value = this.minDamageDealt
 
         return defenceObject
     }
@@ -43,23 +51,23 @@ class Character {
 
     isAlive: boolean = true;
 
-    min_damage_dealt: number
+    minDamageDealt: number
 
     stats: Partial<IStats> = {
         accuracy: 1,
         attack: 1,
         current_hp: 0,
+        defence: 0,
         hp: 0,
         crit: 0,
         crit_multiplier: 1
-
     };
 
     id: number
 
     constructor(initConfig?: ICharacter) {
+        let { constructorStats, id, defenceFunction, minDamageDealt } = initConfig || {};
 
-        let { constructorStats, id, defenceFunction } = initConfig || {};
         this.stats = !constructorStats ? this.stats : {
             ...this.stats,
             ...constructorStats,
@@ -68,6 +76,10 @@ class Character {
         };
 
         this.id = id ? id : uniqueID();
+
+        if(defenceFunction) this.#defenceFunction = defenceFunction  
+
+        this.minDamageDealt = minDamageDealt ? minDamageDealt : null
 
         this.checkErrors();
 
@@ -109,12 +121,16 @@ class Character {
         return solution;
     };
 
+    checkErrors: () => void = () => {
+        checkStatsBounds(this.stats);
+    }
+
     defend(
         data: IAttackObject,
         callback?: (attackObject: IAttackObject, defenceObject: IDefenceObject, character?: Character) => void
     ) {
         //execute the defence function
-        let solution =  this.defenceFunction(data)
+        let solution =  this.#defenceFunction(data, this)
 
         //calls callback if passed
         callback && callback(data, solution, this)
@@ -128,10 +144,6 @@ class Character {
 
     //function to load probabilities.
     getProb = () => Math.random();
-
-    checkErrors: () => void = () => {
-        checkStatsBounds(this.stats);
-    }
 
 }
 

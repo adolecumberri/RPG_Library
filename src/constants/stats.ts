@@ -40,6 +40,43 @@ const TESTING_STATS = {
     wrong_hp: -481,
 }
 
+const CHARACTER_STATS = {
+    correct_basic_stats: {
+        accuracy: 1,
+        attack: 1,
+        attack_interval: 1,
+        att_speed: 1,
+        crit: 0,
+        crit_multiplier: 1,
+        current_hp: 0,
+        defence: 0,
+        evasion: 0,
+        hp: 0,
+    },
+    incorrect_high_stats: {
+        accuracy: -11,
+        attack: -43,
+        attack_interval: -23,
+        att_speed: 0,
+        crit: -1,
+        crit_multiplier: 0,
+        current_hp: -9,
+        defence: 0,
+        evasion: -9,
+        hp: -4,
+    },
+    base_stats: {
+        accuracy: 1,
+        attack: 1,
+        crit: 0,
+        crit_multiplier: 1,
+        current_hp: 0,
+        defence: 0,
+        hp: 0,
+    }
+}
+
 export {
-    TESTING_STATS
+    TESTING_STATS,
+    CHARACTER_STATS
 }

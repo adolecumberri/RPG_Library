@@ -1,64 +1,11 @@
 import Character from '../classes/Character'
+import { DEFAULT_ATTACK_OBJECT, DEFAULT_DEFENCE_OBJECT } from '../constants/defaults'
 import discriminators from '../constants/discriminators'
+import { CHARACTER_STATS as stats } from '../constants/stats'
+import { IAttackObject } from '../interfaces'
+import { IDefenceFunction } from '../interfaces/Character.Interface'
 
 describe('Characters are created properly', () => {
-
-    const stats = {
-        correct_basic_stats: {
-            accuracy: 1,
-            attack: 1,
-            attack_interval: 1,
-            att_speed: 1,
-            crit: 0,
-            crit_multiplier: 1,
-            current_hp: 0,
-            defence: 0,
-            evasion: 0,
-            hp: 0,
-        },
-        incorrect_high_stats: {
-            accuracy: -11,
-            attack: -43,
-            attack_interval: -23,
-            att_speed: 0,
-            crit: -1,
-            crit_multiplier: 0,
-            current_hp: -9,
-            defence: 0,
-            evasion: -9,
-            hp: -4,
-        },
-        base_stats: {
-            accuracy: 1,
-            attack: 1,
-            crit: 0,
-            crit_multiplier: 1,
-            current_hp: 0,
-            hp: 0,
-        }
-    }
-
-    const expected_basic_stats = {
-        "accuracy": 1,
-        "attack_interval": 1,
-        "att_speed": 1,
-        "attack": 1,
-        "crit": 0,
-        "crit_multiplier": 1,
-        "current_hp": 0,
-        "defence": 0,
-        "evasion": 0,
-        "hp": 0
-    }
-
-    const expected_basic_object = {
-        "actions": undefined,
-        "alive": true,
-        "checkErrors": jest.fn(),
-        "getProb": jest.fn(),
-        "rand": jest.fn(),
-        "stats": expected_basic_stats
-    }
 
     test('Created Character without params', () => {
         let char = new Character()
@@ -117,3 +64,70 @@ describe('Character attacks', () => {
         expect(solution).toStrictEqual({ discriminator: "attack_object", type: "normal", value: 3 })
     })
 })
+
+describe('Character defence', () => {
+    let attackObject = DEFAULT_ATTACK_OBJECT
+    let highAttackObject = {...DEFAULT_ATTACK_OBJECT, value: 9999 } as IAttackObject
+
+    test('defend works as expected', () => {
+        let char = new Character()
+
+        expect(char.defend(attackObject)).toEqual({
+            discriminator: discriminators['DEFENCE_OBJECT'],
+            value: 0,
+            type: 'normal'
+        })
+
+        expect(char.defend(highAttackObject)).toEqual({
+            discriminator: discriminators['DEFENCE_OBJECT'],
+            value: 9999,
+            type: 'normal'
+        })
+    })
+
+    test('defend works as expected with min_damage_dealt', () => {
+        let char = new Character({
+            minDamageDealt: 5
+        })
+
+        expect(char.defend(attackObject)).toEqual({
+            discriminator: discriminators['DEFENCE_OBJECT'],
+            value: 5,
+            type: 'normal'
+        })
+
+        expect(char.defend(highAttackObject)).toEqual({
+            discriminator: discriminators['DEFENCE_OBJECT'],
+            value: 9999,
+            type: 'normal'
+        })
+    })
+
+    test('custom defendFunction works as expected ', () => {
+
+        const defenceFunction: IDefenceFunction = (attackObject) => {
+            
+            let defenceObject = DEFAULT_DEFENCE_OBJECT
+            defenceObject.type = 'evasion'
+            defenceObject.value = 10
+
+            return defenceObject
+        }
+
+        let char = new Character({
+            defenceFunction
+        })
+
+        expect(char.defend(attackObject)).toEqual({
+            discriminator: discriminators['DEFENCE_OBJECT'],
+            value: 10,
+            type: 'evasion'
+        })
+
+        expect(char.defend(highAttackObject)).toEqual({
+            discriminator: discriminators['DEFENCE_OBJECT'],
+            value: 10,
+            type: 'evasion'
+        })
+    })
+})  

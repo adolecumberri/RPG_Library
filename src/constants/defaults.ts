@@ -12,3 +12,10 @@ export const DEFAULT_DEFENCE_OBJECT: IDefenceObject = {
     type: 'normal',
     value: 0
 }
+
+export const DEFENCE_EVASION_OBJECT: IDefenceObject = {
+    discriminator: discriminators.DEFENCE_OBJECT,
+    type: 'evasion',
+    value: 0
+}
+

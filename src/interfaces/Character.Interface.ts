@@ -1,4 +1,5 @@
 import Character from "../classes/Character";
+import { IAttackObject, IDefenceObject } from "./Common.interface";
 
 interface IStats {
     accuracy: number
@@ -27,4 +28,6 @@ interface IActions {
     straightDamage?: (character: Character) => any
 }
 
-export { IActions, IStats }
+type IDefenceFunction = (attackObject: IAttackObject) => IDefenceObject
+
+export { IActions, IStats, IDefenceFunction }
