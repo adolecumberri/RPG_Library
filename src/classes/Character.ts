@@ -27,7 +27,7 @@ class Character {
 
     defenceFunction = (attackObject: IAttackObject) => {
         //default defence object
-        let defenceObject = { ...DEFAULT_DEFENCE_OBJECT }
+        let defenceObject = DEFAULT_DEFENCE_OBJECT
 
         //calculated damage after defence is substracted
         defenceObject.value = attackObject.value - this.stats.defence
