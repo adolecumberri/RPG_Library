@@ -7,11 +7,11 @@ describe('Characters are created properly', () => {
         correct_basic_stats: {
             accuracy: 1,
             attack: 1,
-            att_interval: 1,
+            attack_interval: 1,
             att_speed: 1,
             crit: 0,
             crit_multiplier: 1,
-            currentHp: 0,
+            current_hp: 0,
             deffence: 0,
             evasion: 0,
             hp: 0,
@@ -19,11 +19,11 @@ describe('Characters are created properly', () => {
         incorrect_high_stats: {
             accuracy: -11,
             attack: -43,
-            att_interval: -23,
+            attack_interval: -23,
             att_speed: 0,
             crit: -1,
             crit_multiplier: 0,
-            currentHp: -9,
+            current_hp: -9,
             deffence: 0,
             evasion: -9,
             hp: -4,
@@ -40,12 +40,12 @@ describe('Characters are created properly', () => {
 
     const expected_basic_stats = {
         "accuracy": 1,
-        "att_interval": 1,
+        "attack_interval": 1,
         "att_speed": 1,
         "attack": 1,
         "crit": 0,
         "crit_multiplier": 1,
-        "currentHp": 0,
+        "current_hp": 0,
         "deffence": 0,
         "evasion": 0,
         "hp": 0
@@ -83,7 +83,6 @@ describe('Characters are created properly', () => {
         //TODO: when error bransh will be pushed, this will work.
         expect(() => char).toThrowError(Error)
     })
-
 })
 
 describe('Character attacks', () => {
