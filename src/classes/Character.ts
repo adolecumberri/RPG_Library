@@ -3,12 +3,8 @@ import M from '../constants/messages';
 import { IActions, IDamageObject, IStats, IVariation } from '../interfaces'
 import { isPercentage, percentageToNumber, uniqueID } from '../helper';
 import { checkStatsBounds } from '../helper/errorControllers';
-import discriminators from '../constants/discriminators'
-// import { StatsManager } from './fightStatsManager';
+import discriminators from '../constants/discriminators';
 
-//TODOS: add Spells.
-//TODO: add Status manadgement.
-//TODO: 
 
 // * @param {type}   var           Description.
 // * @param {type}   [var]         Description of optional variable.
@@ -18,7 +14,7 @@ import discriminators from '../constants/discriminators'
 // * @return {any}   ejemplo de return.
 
 type ICharacter = {
-    stats?: IStats
+    constructorStats?: Partial<IStats>
     id?: number
 }
 
@@ -33,9 +29,9 @@ class Character {
 
     alive: boolean = true;
 
-    discriminator = discriminators.CHARACTER
+    discriminator = discriminators['CHARACTER']
 
-    stats: IStats = {
+    stats: Partial<IStats> = {
         accuracy: 1,
         attack: 1,
         current_hp: 0,
@@ -49,12 +45,12 @@ class Character {
 
     constructor(initConfig?: ICharacter) {
 
-        let { stats, id } = initConfig || {};
-        this.stats = !stats ? this.stats : {
+        let { constructorStats, id } = initConfig || {};
+        this.stats = !constructorStats ? this.stats : {
             ...this.stats,
-            ...stats,
-            current_hp: stats?.current_hp ? stats.current_hp :
-                stats?.hp ? stats.hp : 0
+            ...constructorStats,
+            current_hp: constructorStats?.current_hp ? constructorStats.current_hp :
+                constructorStats?.hp ? constructorStats.hp : 0
         };
 
         this.id = id ? id : uniqueID();
@@ -99,33 +95,33 @@ class Character {
         return solution;
     };
 
-	defend: (data: any) => any = (enemi) => {
-		// let { id, hp, currentHp, name, surname, def, evasion } = this.stats;
-		// let finalDamage = 0;
+    defend: (data: any) => any = (enemi) => {
+        // let { id, hp, currentHp, name, surname, def, evasion } = this.stats;
+        // let finalDamage = 0;
 
-		// if (evasion <= this.getProb()) {
-		// 	//Evade o no.
-		// 	let enemiAttack = enemi.attack();
-		// 	let attMultiplier = 40 / (40 + def);
-		// 	finalDamage = Math.round(enemiAttack * attMultiplier);
+        // if (evasion <= this.getProb()) {
+        // 	//Evade o no.
+        // 	let enemiAttack = enemi.attack();
+        // 	let attMultiplier = 40 / (40 + def);
+        // 	finalDamage = Math.round(enemiAttack * attMultiplier);
 
-		// 	//Stats
-		// 	enemi.fightStats.set('total_damage', enemi.fightStats.get('total_damage') + finalDamage);
-		// 	this.fightStats.addHitReceived();
-		// } else {
-		// 	enemi.calcNextTurn(enemi.heroEfects.att_interval);
+        // 	//Stats
+        // 	enemi.fightStats.set('total_damage', enemi.fightStats.get('total_damage') + finalDamage);
+        // 	this.fightStats.addHitReceived();
+        // } else {
+        // 	enemi.calcNextTurn(enemi.heroEfects.att_interval);
 
-		// 	//stats
-		// 	this.fightStats.addEvasion();
-		// }
+        // 	//stats
+        // 	this.fightStats.addEvasion();
+        // }
 
-		// this.heroStats.currentHp = currentHp - finalDamage >= 0 ? currentHp - finalDamage : 0; //
-		// //stats
-		// this.fightStats.set('currhp', this.heroStats.currentHp);
-		// if (this.heroStats.currentHp === 0) {
-		// 	this.isDead = true;
-		// }
-	};
+        // this.heroStats.currentHp = currentHp - finalDamage >= 0 ? currentHp - finalDamage : 0; //
+        // //stats
+        // this.fightStats.set('currhp', this.heroStats.currentHp);
+        // if (this.heroStats.currentHp === 0) {
+        // 	this.isDead = true;
+        // }
+    };
 
 
     rand = (max: number, min = 0) => Math.round(Math.random() * (max - min) + min);

@@ -5,6 +5,4 @@
     DEFENCE_OBJECT: 'defence_object'
 }
 
-export interface discriminators
-
 export default discriminators

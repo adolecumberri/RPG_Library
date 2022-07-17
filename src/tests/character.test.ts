@@ -1,4 +1,5 @@
 import Character from '../classes/Character'
+import discriminators from '../constants/discriminators'
 
 describe('Characters are created properly', () => {
 
@@ -67,7 +68,7 @@ describe('Characters are created properly', () => {
 
     test('Created Character with correct Stats', () => {
         let char = new Character({
-            stats: stats.correct_basic_stats
+            constructorStats: stats.correct_basic_stats
         })
 
         expect(typeof char).toBe('object')
@@ -76,20 +77,20 @@ describe('Characters are created properly', () => {
 
     test('Created Character with wrong Stats', () => {
         let char = new Character({
-            stats: stats.incorrect_high_stats
+            constructorStats: stats.incorrect_high_stats
         })
 
         //TODO: when error bransh will be pushed, this will work.
-        expect(() => char).not.toThrowError(Error)
+        expect(() => char).toThrowError(Error)
     })
 
 })
 
 describe('Character attacks', () => {
     const ATTACKS = {
-        NORMAL: { type: "normal", value: 1 },
-        MISS: { type: "miss", value: 0 },
-        CRITICAL: { type: "critical", value: 1 }
+        NORMAL: { discriminator: discriminators.ATTACK_OBJECT, type: "normal", value: 1 },
+        MISS: { discriminator: discriminators.ATTACK_OBJECT, type: "miss", value: 0 },
+        CRITICAL: { discriminator: discriminators.ATTACK_OBJECT, type: "critical", value: 1 }
     }
 
     test('Character attacks', () => {
@@ -99,24 +100,24 @@ describe('Character attacks', () => {
     })
 
     test('Character attacks and miss', () => {
-        let char = new Character({stats: {accuracy: 0}})
+        let char = new Character({ constructorStats: { accuracy: 0 } })
 
         expect(char.attack()).toStrictEqual(ATTACKS.MISS)
     })
 
     test('Character attacks and crit', () => {
-        let char = new Character({stats: {crit: 1, crit_multiplier: 1}})
+        let char = new Character({ constructorStats: { crit: 1, crit_multiplier: 1 } })
 
         expect(char.attack()).toStrictEqual(ATTACKS.CRITICAL)
     })
 
     test('Character callback works', () => {
         let char = new Character()
-        let solution ;
-        char.attack( (attackObject) => {
-            solution = {...attackObject }
+        let solution;
+        char.attack((attackObject) => {
+            solution = { ...attackObject }
             solution.value += 2;
         })
-        expect(solution).toStrictEqual({ type: "normal", value: 3 })
+        expect(solution).toStrictEqual({ discriminator: "attack_object", type: "normal", value: 3 })
     })
 })

@@ -2,7 +2,7 @@ import M from "../constants/messages";
 import { IStats } from "../interfaces";
 
 
-const checkStatsBounds = (stats: IStats) => {
+const checkStatsBounds = (stats: Partial<IStats>) => {
 
     // true === error.
     // false === correct
@@ -12,7 +12,7 @@ const checkStatsBounds = (stats: IStats) => {
             errorMessage: M.errors.out_of_bounds.between_one_and_zero('accuracy')
         },
         attack: {
-            isWrong: (value: number) => value < 1,
+            isWrong: (value: number) => value < 0,
             errorMessage: M.errors.out_of_bounds.lower_than_one('attack')
         },
         att_interval: { //bigger === lower
