@@ -28,6 +28,6 @@ interface IActions {
     straightDamage?: (character: Character) => any
 }
 
-type IDefenceFunction = (attackObject: IAttackObject) => IDefenceObject
+type IDefenceFunction = (attackObject: IAttackObject, character: Character) => IDefenceObject
 
 export { IActions, IStats, IDefenceFunction }

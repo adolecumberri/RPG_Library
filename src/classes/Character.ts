@@ -27,17 +27,11 @@ class Character {
 
     actions: IActions;
 
-    #defenceFunction: IDefenceFunction = (attackObject: IAttackObject) => {
+    #defenceFunction: IDefenceFunction = (attackObject) => {
         //default defence object
         let defenceObject = DEFAULT_DEFENCE_OBJECT
 
         //calculated damage after defence is substracted
-        console.log({
-            a:attackObject.value - this.stats.defence,
-            b: attackObject.value ,
-            c: this.stats.defence,
-            d: this.minDamageDealt
-        })
         defenceObject.value = attackObject.value - this.stats.defence
 
         //if min_damage is set AND damage dealt is lower than min_damage, damage dealt = min_damage
