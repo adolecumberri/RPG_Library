@@ -1,5 +1,5 @@
 
-import { IActions, IStats, IVariation } from "./Character.Interface";
-import { IDamageObject } from './Common.interface'
+import { IActions, IStats } from "./Character.Interface";
+import {  IAttackObject, IDefenceObject } from './Common.interface'
 
-export { IActions, IStats, IVariation, IDamageObject }
+export { IActions, IStats, IAttackObject, IDefenceObject }

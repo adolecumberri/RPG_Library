@@ -1,9 +1,11 @@
 
 import M from '../constants/messages';
-import { IActions, IDamageObject, IStats, IVariation } from '../interfaces'
+import { IActions, IStats } from '../interfaces'
 import { isPercentage, percentageToNumber, uniqueID } from '../helper';
 import { checkStatsBounds } from '../helper/errorControllers';
 import discriminators from '../constants/discriminators';
+import { IAttackObject, IDefenceObject } from '../interfaces/Common.interface';
+import { DEFAULT_ATTACK_OBJECT, DEFAULT_DEFENCE_OBJECT } from '../constants/defaults';
 
 
 // * @param {type}   var           Description.
@@ -16,20 +18,32 @@ import discriminators from '../constants/discriminators';
 type ICharacter = {
     constructorStats?: Partial<IStats>
     id?: number
+    defenceFunction?: (...args: any[]) => IDefenceObject
 }
 
-/**
- * @param   id              id.
- * @param   stats           Description.
- * @param   variation       Description.
- */
 class Character {
 
     actions: IActions;
 
-    alive: boolean = true;
+    defenceFunction = (attackObject: IAttackObject) => {
+        //default defence object
+        let defenceObject = { ...DEFAULT_DEFENCE_OBJECT }
+
+        //calculated damage after defence is substracted
+        defenceObject.value = attackObject.value - this.stats.defence
+
+        //if min_damage is set AND damage dealt is lower than min_damage, damage dealt = min_damage
+        if (this.min_damage_dealt && defenceObject.value <= Number(this.min_damage_dealt))
+            defenceObject.value = this.min_damage_dealt
+
+        return defenceObject
+    }
 
     discriminator = discriminators['CHARACTER']
+
+    isAlive: boolean = true;
+
+    min_damage_dealt: number
 
     stats: Partial<IStats> = {
         accuracy: 1,
@@ -45,7 +59,7 @@ class Character {
 
     constructor(initConfig?: ICharacter) {
 
-        let { constructorStats, id } = initConfig || {};
+        let { constructorStats, id, defenceFunction } = initConfig || {};
         this.stats = !constructorStats ? this.stats : {
             ...this.stats,
             ...constructorStats,
@@ -68,9 +82,9 @@ class Character {
      * @returns Damage Object
      */
     attack(
-        callback?: (attackObject?: IDamageObject, character?: Character) => void
+        callback?: (attackObject?: IAttackObject, character?: Character) => void
     ) {
-        let solution: IDamageObject = {
+        let solution: IAttackObject = {
             discriminator: discriminators.ATTACK_OBJECT,
             value: 0,
             type: 'normal'
@@ -95,33 +109,19 @@ class Character {
         return solution;
     };
 
-    defend: (data: any) => any = (enemi) => {
-        // let { id, hp, currentHp, name, surname, def, evasion } = this.stats;
-        // let finalDamage = 0;
+    defend(
+        data: IAttackObject,
+        callback?: (attackObject: IAttackObject, defenceObject: IDefenceObject, character?: Character) => void
+    ) {
+        //execute the defence function
+        let solution =  this.defenceFunction(data)
 
-        // if (evasion <= this.getProb()) {
-        // 	//Evade o no.
-        // 	let enemiAttack = enemi.attack();
-        // 	let attMultiplier = 40 / (40 + def);
-        // 	finalDamage = Math.round(enemiAttack * attMultiplier);
+        //calls callback if passed
+        callback && callback(data, solution, this)
 
-        // 	//Stats
-        // 	enemi.fightStats.set('total_damage', enemi.fightStats.get('total_damage') + finalDamage);
-        // 	this.fightStats.addHitReceived();
-        // } else {
-        // 	enemi.calcNextTurn(enemi.heroEfects.att_interval);
-
-        // 	//stats
-        // 	this.fightStats.addEvasion();
-        // }
-
-        // this.heroStats.currentHp = currentHp - finalDamage >= 0 ? currentHp - finalDamage : 0; //
-        // //stats
-        // this.fightStats.set('currhp', this.heroStats.currentHp);
-        // if (this.heroStats.currentHp === 0) {
-        // 	this.isDead = true;
-        // }
-    };
+        //returns DefenceObject
+        return solution;
+    }
 
 
     rand = (max: number, min = 0) => Math.round(Math.random() * (max - min) + min);

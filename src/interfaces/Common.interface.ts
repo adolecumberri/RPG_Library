@@ -1,6 +1,6 @@
 import discriminators from "../constants/discriminators"
 
-interface IDamageObject{
+interface IAttackObject{
 	discriminator: typeof discriminators['ATTACK_OBJECT']
 	value: number
 	type: 'normal' | 'critical' | 'miss'
@@ -13,6 +13,6 @@ interface IDefenceObject{
 }
 
 export {
-    IDamageObject,
+    IAttackObject,
 	IDefenceObject
 }
