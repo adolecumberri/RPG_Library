@@ -28,6 +28,7 @@ interface IActions {
 }
 
 //! Discriminator used to check interface in conditions.
+// TODO: añadir a los discriminadores comunes.
 interface IVariation {
     discriminator: "IVariation",
     max: number,
