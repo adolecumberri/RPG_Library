@@ -1,4 +1,4 @@
-import { IStats } from "../interfaces"
+import { IStats } from "../../interfaces"
 
 const TESTING_STATS = {
     correct_basic_stats: {

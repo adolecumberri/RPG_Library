@@ -1,7 +1,7 @@
 import Character from '../classes/Character'
 import { DEFAULT_ATTACK_OBJECT, DEFAULT_DEFENCE_OBJECT } from '../constants/defaults'
 import discriminators from '../constants/discriminators'
-import { CHARACTER_STATS as stats } from '../constants/stats'
+import { CHARACTER_STATS as stats } from './constants/stats'
 import { IAttackObject } from '../interfaces'
 import { IDefenceFunction } from '../interfaces/Character.Interface'
 
@@ -106,7 +106,6 @@ describe('Character defence', () => {
     test('custom defendFunction works as expected ', () => {
 
         const defenceFunction: IDefenceFunction = (attackObject) => {
-            
             let defenceObject = DEFAULT_DEFENCE_OBJECT
             defenceObject.type = 'evasion'
             defenceObject.value = 10
