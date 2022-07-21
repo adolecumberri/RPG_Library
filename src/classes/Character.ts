@@ -1,14 +1,13 @@
 
 import M from '../constants/messages';
-import { IActions, IDamageObject, IStats, IVariation } from '../interfaces'
+import { IActions, IStats } from '../interfaces'
 import { isPercentage, percentageToNumber, uniqueID } from '../helper';
 import { checkStatsBounds } from '../helper/errorControllers';
+import discriminators from '../constants/discriminators';
+import { IAttackObject, IDefenceObject } from '../interfaces/Common.interface';
+import { DEFAULT_ATTACK_OBJECT, DEFAULT_DEFENCE_OBJECT } from '../constants/defaults';
+import { IDefenceFunction } from '../interfaces/Character.Interface';
 
-// import { StatsManager } from './fightStatsManager';
-
-//TODOS: add Spells.
-//TODO: add Status manadgement.
-//TODO: 
 
 // * @param {type}   var           Description.
 // * @param {type}   [var]         Description of optional variable.
@@ -18,50 +17,69 @@ import { checkStatsBounds } from '../helper/errorControllers';
 // * @return {any}   ejemplo de return.
 
 type ICharacter = {
-    stats?: IStats
+    constructorStats?: Partial<IStats>
     id?: number
+    defenceFunction?: (...args: any[]) => IDefenceObject,
+    minDamageDealt?: number
 }
 
-/**
- * @param   id              id.
- * @param   stats           Description.
- * @param   variation       Description.
- */
 class Character {
 
     actions: IActions;
 
-    alive: boolean = true;
-    stats: IStats = {
+    #defenceFunction: IDefenceFunction = (attackObject) => {
+        //default defence object
+        let defenceObject = DEFAULT_DEFENCE_OBJECT
+
+        //calculated damage after defence is substracted
+        defenceObject.value = attackObject.value - this.stats.defence
+
+        //if min_damage is set AND damage dealt is lower than min_damage, damage dealt = min_damage
+        if (this.minDamageDealt && defenceObject.value <= Number(this.minDamageDealt))
+            defenceObject.value = this.minDamageDealt
+
+        return defenceObject
+    }
+
+    discriminator = discriminators['CHARACTER']
+
+    isAlive: boolean = true;
+
+    minDamageDealt: number
+
+    stats: Partial<IStats> = {
         accuracy: 1,
         attack: 1,
         current_hp: 0,
+        defence: 0,
         hp: 0,
         crit: 0,
         crit_multiplier: 1
-
     };
 
     id: number
 
     constructor(initConfig?: ICharacter) {
+        let { constructorStats, id, defenceFunction, minDamageDealt } = initConfig || {};
 
-        let { stats, id } = initConfig || {};
-        this.stats = !stats ? this.stats : {
+        this.stats = !constructorStats ? this.stats : {
             ...this.stats,
-            ...stats,
-            current_hp: stats?.current_hp ? stats.current_hp :
-                stats?.hp ? stats.hp : 0
+            ...constructorStats,
+            current_hp: constructorStats?.current_hp ? constructorStats.current_hp :
+                constructorStats?.hp ? constructorStats.hp : 0
         };
 
         this.id = id ? id : uniqueID();
+
+        if(defenceFunction) this.#defenceFunction = defenceFunction  
+
+        this.minDamageDealt = minDamageDealt ? minDamageDealt : null
 
         this.checkErrors();
 
     }
 
     /**
-     * 
      * @param callback 
      * Calculates attacks. 
      * is Missing? attack = 0. 
@@ -70,9 +88,10 @@ class Character {
      * @returns Damage Object
      */
     attack(
-        callback?: (attackObject?: IDamageObject, character?: Character) => void
+        callback?: (attackObject?: IAttackObject, character?: Character) => void
     ) {
-        let solution: IDamageObject = {
+        let solution: IAttackObject = {
+            discriminator: discriminators.ATTACK_OBJECT,
             value: 0,
             type: 'normal'
         }
@@ -83,29 +102,42 @@ class Character {
         if (accuracy < this.getProb()) {
             // miss
             solution.type = 'miss';
-        } else {
+        } else if (crit > this.getProb()) {
             //critical
-            if (crit > this.getProb()) {
-                solution.value = attack * crit_multiplier;
-                solution.type = 'critical';
-            } else {
-                // normal hit
-                solution.value = attack;
-            }
+            solution.value = attack * crit_multiplier;
+            solution.type = 'critical';
+        } else {
+            // normal hit
+            solution.value = attack;
         }
 
         callback && callback(solution, this);
         return solution;
     };
 
+    checkErrors: () => void = () => {
+        checkStatsBounds(this.stats);
+    }
+
+    defend(
+        data: IAttackObject,
+        callback?: (attackObject: IAttackObject, defenceObject: IDefenceObject, character?: Character) => void
+    ) {
+        //execute the defence function
+        let solution =  this.#defenceFunction(data, this)
+
+        //calls callback if passed
+        callback && callback(data, solution, this)
+
+        //returns DefenceObject
+        return solution;
+    }
+
+
     rand = (max: number, min = 0) => Math.round(Math.random() * (max - min) + min);
 
     //function to load probabilities.
     getProb = () => Math.random();
-
-    checkErrors: () => void = () => {
-        checkStatsBounds(this.stats);
-    }
 
 }
 

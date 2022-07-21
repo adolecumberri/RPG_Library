@@ -82,7 +82,7 @@ const checkHp = (val: number) => {
     if ( CHECKS.hp.isWrong(val) ) throw new Error(CHECKS.hp.errorMessage)
 }
 
-const checkStatsBounds = (stats: IStats) => {
+const checkStatsBounds = (stats: Partial<IStats>) => {
     // true === error.
     // false === correct
   

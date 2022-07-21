@@ -12,7 +12,7 @@ import {
     checkStatsBounds
 } from '../helper/errorControllers'
 
-import { TESTING_STATS as stats } from '../constants/stats'
+import { TESTING_STATS as stats } from './constants/stats'
 
 describe('Stats Checker', () => {
 
