@@ -7,6 +7,7 @@ import {
     checkCrit_multiplier,
     checkCurrent_hp,
     checkDefence,
+    checkDuration,
     checkEvasion,
     checkHp,
     checkStatsBounds
@@ -134,6 +135,18 @@ describe('Stats Checker', () => {
         it('check hp fails', () => {
             expect(() => checkHp(stats.wrong_hp)).toThrowError(Error)
         })
+    })
+
+})
+
+describe('', ( ) => {
+
+    it('check Duration Fails', () => {
+        expect(() => checkDuration(-1)).toThrowError(Error)
+    })
+
+    it('check Duration works', () => {
+        expect(() => checkDuration(1)).not.toThrowError(Error)
     })
 
 })
