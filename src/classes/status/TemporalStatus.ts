@@ -1,3 +1,4 @@
+import discriminators from "../../constants/discriminators"
 import { STATUS_APPLIED_ON, STATUS_TYPE } from "../../constants/status"
 import { uniqueID } from "../../helper"
 import { checkDuration } from "../../helper/errorControllers"
@@ -23,6 +24,8 @@ class TemporalStatus {
     character: Character
 
     duration = 1
+
+    discriminator = discriminators.TEMPORAL_STATUS
 
     id: number
     

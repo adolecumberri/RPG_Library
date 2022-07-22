@@ -13,16 +13,18 @@ describe('Permanen Status works fine', () => {
         })
 
         expect(status).toEqual({
-            "activate": expect.any(Function),
-            "addDuration": expect.any(Function),
-            "appliedOn": "AFTER_TURN",
-            "character": undefined,
-            "load": expect.any(Function),
-            "duration": 1,
-            "isActive": true,
-            "statAffected": "hp",
-            "type": "BUFF_FIXED",
-            "value": 0
+            activate: expect.any(Function),
+            addDuration: expect.any(Function),
+            appliedOn: "AFTER_TURN",
+            character: undefined,
+            load: expect.any(Function),
+            discriminator: 5,
+            duration: 1,
+            id: expect.any(Number),
+            isActive: true,
+            statAffected: "hp",
+            type: "BUFF_FIXED",
+            value: 0
         })
     })
 
