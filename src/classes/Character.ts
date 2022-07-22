@@ -3,6 +3,7 @@ import M from '../constants/messages';
 import { IActions, IDamageObject, IStats, IVariation } from '../interfaces'
 import { isPercentage, percentageToNumber, uniqueID } from '../helper';
 import { checkStatsBounds } from '../helper/errorControllers';
+import StatusManager from './status/StatusManager';
 
 // import { StatsManager } from './fightStatsManager';
 
@@ -32,6 +33,7 @@ class Character {
     actions: IActions;
 
     alive: boolean = true;
+
     stats: IStats = {
         accuracy: 1,
         attack: 1,
@@ -41,6 +43,8 @@ class Character {
         crit_multiplier: 1
 
     };
+
+    sm: StatusManager = new StatusManager();
 
     id: number
 
@@ -60,15 +64,6 @@ class Character {
 
     }
 
-    /**
-     * 
-     * @param callback 
-     * Calculates attacks. 
-     * is Missing? attack = 0. 
-     * is Critical? attack * crit_multiplier. 
-     * normal attack? attack returned. 
-     * @returns Damage Object
-     */
     attack(
         callback?: (attackObject?: IDamageObject, character?: Character) => void
     ) {

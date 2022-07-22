@@ -1,4 +1,5 @@
 import { STATUS_APPLIED_ON, STATUS_TYPE } from "../../constants/status"
+import { uniqueID } from "../../helper"
 import { checkDuration } from "../../helper/errorControllers"
 import { IStats } from "../../interfaces"
 import { statusAppliedOn, statusType } from "../../interfaces/status.interface"
@@ -8,6 +9,7 @@ interface ITemporalStatus {
     appliedOn?: statusAppliedOn
     character?: Character
     duration?: number
+    id?:number
     statAffected: keyof IStats
     type?: statusType
     value?: number
@@ -16,12 +18,14 @@ interface ITemporalStatus {
 //!TODO: poder aplicar en mas de un solo elemento.
 class TemporalStatus {
 
-    appliedOn = STATUS_APPLIED_ON.AFTER_TURN
+    appliedOn: statusAppliedOn = STATUS_APPLIED_ON.AFTER_TURN
 
     character: Character
 
     duration = 1
 
+    id: number
+    
     isActive = false
 
     statAffected = null
@@ -35,6 +39,7 @@ class TemporalStatus {
             appliedOn = <statusAppliedOn> STATUS_APPLIED_ON.AFTER_TURN,
             character,
             duration = 1,
+            id,
             type = <statusType> STATUS_TYPE.BUFF_FIXED ,
             statAffected,
             value = 0
@@ -45,6 +50,7 @@ class TemporalStatus {
             this.statAffected = statAffected
             this.type = type
             this.value = value
+            this.id = id ? id : uniqueID();
 
             this.addDuration(duration)
             this.load(character)
