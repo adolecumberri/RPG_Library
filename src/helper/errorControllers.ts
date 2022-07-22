@@ -2,7 +2,7 @@ import M from "../constants/messages";
 import { IStats } from "../interfaces";
 
 type IChecks = {
-    [x in keyof IStats]: {
+    [x in keyof IStats | 'duration']: {
         isWrong: (value: any) => boolean;
         errorMessage: string;
     };
@@ -41,6 +41,10 @@ const CHECKS: IChecks = {
         isWrong: (value: number) => isNaN(parseInt(value as unknown as string)),
         errorMessage: ''
     },
+    duration: {
+        isWrong: (value: number) => value < 0,
+        errorMessage: M.errors.out_of_bounds.lower_than_zero('Duration')
+    },
     evasion: {
         isWrong: (value: number) => value < 0 || value > 1,
         errorMessage: M.errors.out_of_bounds.between_one_and_zero('evasion')
@@ -75,6 +79,9 @@ const checkCurrent_hp = (val: number) => {
 const checkDefence = (val: number) => {
     if ( CHECKS.defence.isWrong(val) ) throw new Error(CHECKS.defence.errorMessage)
 }
+const checkDuration = (val: number) => {
+    if ( CHECKS.duration.isWrong(val) ) throw new Error(CHECKS.duration.errorMessage)
+}
 const checkEvasion = (val: number) => {
     if ( CHECKS.evasion.isWrong(val) ) throw new Error(CHECKS.evasion.errorMessage)
 }
@@ -106,6 +113,7 @@ export {
     checkCrit_multiplier,
     checkCurrent_hp,
     checkDefence,
+    checkDuration,
     checkEvasion, 
     checkHp,
     checkStatsBounds
