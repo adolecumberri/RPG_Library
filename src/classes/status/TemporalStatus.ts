@@ -1,16 +1,15 @@
 import { STATUS_APPLIED_ON, STATUS_TYPE } from "../../constants/status"
 import { checkDuration } from "../../helper/errorControllers"
 import { IStats } from "../../interfaces"
-import { statusAppliedOn, statusType } from "../../interfaces/status.interface"
+import { IStatAffected, statusAppliedOn, statusType } from "../../interfaces/status.interface"
 import Character from "../Character"
 
 interface ITemporalStatus {
     appliedOn?: statusAppliedOn
     character?: Character
     duration?: number
-    statAffected: keyof IStats
+    statAffected: IStatAffected[]
     type?: statusType
-    value?: number
 }
 
 //!TODO: poder aplicar en mas de un solo elemento.
@@ -22,13 +21,11 @@ class TemporalStatus {
 
     duration = 1
 
-    isActive = false
+    isActive = true
 
-    statAffected = null
+    statAffected: IStatAffected[] = []
 
     type = STATUS_TYPE.BUFF_FIXED
-
-    value = 0
 
     constructor(
         {
@@ -36,15 +33,13 @@ class TemporalStatus {
             character,
             duration = 1,
             type = <statusType> STATUS_TYPE.BUFF_FIXED ,
-            statAffected,
-            value = 0
+            statAffected = []
         }: ITemporalStatus) {
 
             this.appliedOn = appliedOn
             this.character = character
             this.statAffected = statAffected
             this.type = type
-            this.value = value
 
             this.addDuration(duration)
             this.load(character)
@@ -68,8 +63,6 @@ class TemporalStatus {
         if( !this.isActive ){
             return
         }
-
-        let statAffected = this.character.stats[this.statAffected]
         
         const ACTION = {
             [STATUS_TYPE.BUFF_FIXED] : this.#loadBuffFixed,
@@ -77,9 +70,11 @@ class TemporalStatus {
             [STATUS_TYPE.DEBUFF_FIXED] : this.#loadDebuffFixed,
             [STATUS_TYPE.DEBUFF_PERCENTAGE] : this.#loadDebuffPercentage,
         }
-        
+
         //the stat changes the value after the ACTION dictionary updates his value with an ecuation.
-        this.character.stats[this.statAffected] = ACTION[this.type]( statAffected )
+        this.statAffected.forEach( (stat) => {
+            this.character.stats[stat.stat] = ACTION[this.type](this.character.stats[stat.stat], stat.value)
+        })
         this.addDuration( this.duration - 1 )
     }
     
@@ -87,13 +82,13 @@ class TemporalStatus {
         this.character = c
     }
 
-    #loadBuffFixed = ( value: number ) => value + this.value
+    #loadBuffFixed = ( value: number, operator: number ) => value + operator
 
-    #loadBuffPercentage = ( value: number ) => value + (value * (this.value / 100))
+    #loadBuffPercentage = ( value: number, operator: number ) => value + (value * (operator / 100))
 
-    #loadDebuffFixed = ( value: number ) => value - this.value
+    #loadDebuffFixed = ( value: number, operator: number ) => value - operator
 
-    #loadDebuffPercentage = ( value: number ) => value - (value * (this.value / 100))
+    #loadDebuffPercentage = ( value: number, operator: number ) => value - (value * (operator / 100))
 
 }
 

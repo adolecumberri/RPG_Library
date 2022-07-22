@@ -1,15 +1,19 @@
 import Character from "../classes/Character"
 import TemporalStatus from "../classes/status/TemporalStatus"
 import { STATUS_TYPE } from "../constants/status"
+import { IStatAffected } from "../interfaces/status.interface"
 
 
 
 describe('Permanen Status works fine', () => {
 
+    let hpChange: IStatAffected = { stat: 'hp', value: 20 }
+    let attackBoost: IStatAffected = { stat: 'attack', value: 10 }
+
     test('Status created correctly', () => {
 
         let status = new TemporalStatus({
-            statAffected: 'hp'
+            statAffected: [hpChange, attackBoost]
         })
 
         expect(status).toEqual({
@@ -20,16 +24,24 @@ describe('Permanen Status works fine', () => {
             "load": expect.any(Function),
             "duration": 1,
             "isActive": true,
-            "statAffected": "hp",
+            "statAffected": [
+                {
+                    "stat": "hp",
+                    "value": 20,
+                },
+                {
+                    "stat": "attack",
+                    "value": 10,
+                }
+            ],
             "type": "BUFF_FIXED",
-            "value": 0
         })
     })
 
     test('Status can be applied to a Character', () => {
         let char = new Character()
         let status = new TemporalStatus({
-            statAffected: 'hp'
+            statAffected: [hpChange, attackBoost]
         })
         status.load(char)
 
@@ -41,11 +53,10 @@ describe('Permanen Status works fine', () => {
             stats: { hp: 100 }
         })
         let status = new TemporalStatus({
-            value: 20,
-            statAffected: 'hp'
+            statAffected: [hpChange, attackBoost]
         })
         status.load(char)
-        
+
         expect(status.isActive).toBe(true)
 
         status.activate()
@@ -60,12 +71,11 @@ describe('Permanen Status works fine', () => {
             stats: { hp: 100 }
         })
         let status = new TemporalStatus({
-            value: 20,
-            statAffected: 'hp',
+            statAffected: [hpChange, attackBoost],
             type: STATUS_TYPE.DEBUFF_FIXED,
         })
 
-        status.load(char)        
+        status.load(char)
         expect(status.isActive).toBe(true)
 
         status.activate()
@@ -80,8 +90,7 @@ describe('Permanen Status works fine', () => {
             stats: { hp: 1000 }
         })
         let status = new TemporalStatus({
-            value: 20,
-            statAffected: 'hp',
+            statAffected: [hpChange, attackBoost],
             type: STATUS_TYPE.BUFF_PERCENTAGE,
         })
 
@@ -100,8 +109,7 @@ describe('Permanen Status works fine', () => {
             stats: { hp: 1000 }
         })
         let status = new TemporalStatus({
-            value: 20,
-            statAffected: 'hp',
+            statAffected: [hpChange, attackBoost],
             type: STATUS_TYPE.DEBUFF_PERCENTAGE,
         })
 
@@ -117,8 +125,7 @@ describe('Permanen Status works fine', () => {
 
     test('Status changes by debuff_percentage', () => {
         let status = new TemporalStatus({
-            value: 20,
-            statAffected: 'hp',
+            statAffected: [hpChange, attackBoost],
             type: STATUS_TYPE.DEBUFF_PERCENTAGE,
         })
 
@@ -128,7 +135,7 @@ describe('Permanen Status works fine', () => {
 
         expect(status.duration).toBe(0)
         expect(status.isActive).toBe(false)
-        
+
         status.addDuration(1)
         expect(status.duration).toBe(1)
         expect(status.isActive).toBe(true)
