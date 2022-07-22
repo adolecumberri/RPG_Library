@@ -1,14 +1,16 @@
 import { STATUS_APPLIED_ON, STATUS_TYPE } from "../../constants/status"
+import { uniqueID } from "../../helper"
 import { IStats } from "../../interfaces"
 import { statusAppliedOn, statusType } from "../../interfaces/status.interface"
 import Character from "../Character"
 
 interface IPermanentStatus {
-    type?: statusType
     appliedOn?: statusAppliedOn
-    value?: number
-    statAffected: keyof IStats
     character?: Character
+    id?: number
+    statAffected: keyof IStats
+    type?: statusType
+    value?: number
 }
 
 //!TODO: poder aplicar en mas de un solo elemento.
@@ -18,6 +20,8 @@ class PermanentStatus {
 
     character: Character
 
+    id: number
+
     statAffected = null
 
     type = STATUS_TYPE.BUFF_FIXED
@@ -26,15 +30,17 @@ class PermanentStatus {
 
     constructor(
         {
-            type = <statusType> STATUS_TYPE.BUFF_FIXED ,
             appliedOn = <statusAppliedOn> STATUS_APPLIED_ON.AFTER_TURN,
-            value = 0,
+            character,
+            id,
             statAffected,
-            character
+            type = <statusType> STATUS_TYPE.BUFF_FIXED ,
+            value = 0,
         }: IPermanentStatus) {
 
             this.appliedOn = appliedOn
             this.character = character
+            this.id = id ? id : uniqueID()
             this.statAffected = statAffected
             this.type = type
             this.value = value
